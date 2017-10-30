@@ -45,6 +45,8 @@ def chat():
 # correctly
 @app.route('/config')
 def config():
+    print 'Setting up config'
+    print os.environ['TWILIO_ACCOUNT_SID']
     return jsonify(
         TWILIO_ACCOUNT_SID=os.environ['TWILIO_ACCOUNT_SID'],
         TWILIO_NOTIFICATION_SERVICE_SID=os.environ['TWILIO_NOTIFICATION_SERVICE_SID'],
