@@ -1,0 +1,7 @@
+nuts,apple,No data,No data,No data,
+0.126859,0.034546,No data,No data,No data,
+0.078317,0.870388,No data,No data,No data,
+0.514253,0.047018,No data,No data,No data,
+0.074223,0.005728,No data,No data,No data,
+0.058103,0.007651,No data,No data,No data,
+0.058506,0.579039,0.315193,0.010112,0.010244,
