@@ -16,11 +16,11 @@ this sample.
 
 1. Clone this repo:
 
-        git clone https://github.com/GoogleCloudPlatform/python-docs-samples.git
+        git clone https://github.com/promer94/Social-family.git
 
 1. Navigate to the directory that contains the sample code:
 
-        cd python-docs-samples/appengine/standard/firebase/firenotes
+        cd Social-family/flaskFramework/flasklogin
 
 1. Within a virtualenv, install the dependencies to the backend service:
 
