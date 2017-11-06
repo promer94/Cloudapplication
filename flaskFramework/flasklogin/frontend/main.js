@@ -17,7 +17,7 @@ $(function(){
   // deploying the application to a live production environment, change to
   // https://backend-dot-<PROJECT_ID>.appspot.com as specified in the
   // backend's app.yaml file.
-  var backendHostUrl = 'http://localhost:8081';
+  var backendHostUrl = 'http://backend.flasktest-183915.appspot.com';
 
   // Initialize Firebase
   // TODO: Replace with your project's customized code snippet
