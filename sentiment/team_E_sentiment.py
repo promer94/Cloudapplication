@@ -23,14 +23,14 @@ def GetKeyword(num):
     key = []
     if num != 5:
         for i in range(1,num+1):
-            a = GetMiddleStr(lines[9 + (i - 1) * 14], '"text": "', '", ')
+            a = GetMiddleStr(lines[9 + (i - 1) * 15], '"text": "', '", ')
             key.append(a)
         for k in range(num+1,5+1):
             b = "No data"
             key.append(b)
     if num == 5:
         for j in range(1,num+1):
-            a = GetMiddleStr(lines[9 + (j - 1) * 14], '"text": "', '", ')
+            a = GetMiddleStr(lines[9 + (j - 1) * 15], '"text": "', '", ')
             key.append(a)
     return key
 
@@ -38,14 +38,14 @@ def GetAnger(num):
     anger = []
     if num != 5:
         for i in range(1,num+1):
-            a = GetMiddleStr(lines[11 + (i - 1) * 14], '"anger": ', ', ')
+            a = GetMiddleStr(lines[11 + (i - 1) * 15], '"anger": ', ', ')
             anger.append(a)
         for k in range(num+1,5+1):
             b = "No data"
             anger.append(b)
     if num == 5:
         for j in range(1,num+1):
-            a = GetMiddleStr(lines[11 + (j - 1) * 14], '"anger": ', ', ')
+            a = GetMiddleStr(lines[11 + (j - 1) * 15], '"anger": ', ', ')
             anger.append(a)
     return anger
 
@@ -53,14 +53,14 @@ def GetJoy(num):
     joy = []
     if num != 5:
         for i in range(1,num+1):
-            a = GetMiddleStr(lines[12 + (i - 1) * 14], '"joy": ', ', ')
+            a = GetMiddleStr(lines[12 + (i - 1) * 15], '"joy": ', ', ')
             joy.append(a)
         for k in range(num+1,5+1):
             b = "No data"
             joy.append(b)
     if num == 5:
         for j in range(1,num+1):
-            a = GetMiddleStr(lines[12 + (j - 1) * 14], '"joy": ', ', ')
+            a = GetMiddleStr(lines[12 + (j - 1) * 15], '"joy": ', ', ')
             joy.append(a)
     return joy
 
@@ -68,14 +68,14 @@ def GetSadness(num):
     sadness = []
     if num != 5:
         for i in range(1,num+1):
-            a = GetMiddleStr(lines[13 + (i - 1) * 14], '"sadness": ', ', ')
+            a = GetMiddleStr(lines[13 + (i - 1) * 15], '"sadness": ', ', ')
             sadness.append(a)
         for k in range(num+1,5+1):
             b = "No data"
             sadness.append(b)
     if num == 5:
         for j in range(1,num+1):
-            a = GetMiddleStr(lines[13 + (j - 1) * 14], '"sadness": ', ', ')
+            a = GetMiddleStr(lines[13 + (j - 1) * 15], '"sadness": ', ', ')
             sadness.append(a)
     return sadness
 
@@ -83,14 +83,14 @@ def GetFear(num):
     fear = []
     if num != 5:
         for i in range(1,num+1):
-            a = GetMiddleStr(lines[14 + (i - 1) * 14], '"fear": ', ', ')
+            a = GetMiddleStr(lines[14 + (i - 1) * 15], '"fear": ', ', ')
             fear.append(a)
         for k in range(num+1,5+1):
             b = "No data"
             fear.append(b)
     if num == 5:
         for j in range(1,num+1):
-            a = GetMiddleStr(lines[14 + (j - 1) * 14], '"fear": ', ', ')
+            a = GetMiddleStr(lines[14 + (j - 1) * 15], '"fear": ', ', ')
             fear.append(a)
     return fear
 
@@ -98,7 +98,7 @@ def GetDisgust(num):
     disgust = []
     if num != 5:
         for i in range(1,num+1):
-            c = lines[15 + (i - 1) * 14] + lines[16 + (i - 1) * 14]
+            c = lines[15 + (i - 1) * 15] + lines[16 + (i - 1) * 15]
             a = GetMiddleStr(c, '"disgust": ', '      }, ')
             disgust.append(a)
         for k in range(num+1,5+1):
@@ -106,7 +106,7 @@ def GetDisgust(num):
             disgust.append(b)
     if num == 5:
         for j in range(1,num+1):
-            c = lines[15 + (j - 1) * 14] + lines[16 + (j - 1) * 14]
+            c = lines[15 + (j - 1) * 15] + lines[16 + (j - 1) * 15]
             a = GetMiddleStr(c, '"disgust": ', '      }, ')
             disgust.append(a)
     return disgust
@@ -171,6 +171,7 @@ fear = GetFear(num)
 disgust = GetDisgust(num)
 emotion = GetEmotion(num)
 
+
 print(key)
 print(anger)
 print(joy)
@@ -178,8 +179,6 @@ print(sadness)
 print(fear)
 print(disgust)
 print(emotion)
-
-
 
 outputToText(key)
 outputToText(anger)
