@@ -1,14 +1,47 @@
+<!DOCTYPE HTML>
 <html>
-    <head>
-      <style>
-          body {color:rgb(0,0,255);}
-      </style>
-    </head>
-  
-    <form action="" method="post">
-          <p>Please enter the text that you want to do the sentiment</p>
-          <input type="text" name="text" value=""><br>
-          <input type="submit" value="check sentiment">
-    </form>
+        <style>
+                body {color:rgb(0,0,255);}
+        </style>
+    <body>
+        <form id="sentiment_text">
+            <p>Please enter the text that you want to do the sentiment</p>
+            <label>Sentiment text:</label><input type="text" name="sen_test"/>
+            <br/>
+            <input type="submit" value="submit" />
+        </form>
+        
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script type="text/javascript">
+            $('#sentiment_text').submit(function(e) {
+                    e.preventDefault();
 
+                    var data = {};
+                    var Form = this;
+
+                    $.each(this.elements, function(i, v) {
+                        var input = $(v);
+                        data[input.attr("name")] = input.val();
+                        delete data["undefined"];
+                    });
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/sentiment',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data),
+                        context: Form,
+                        success: function(callback) {
+                            console.log(callback);
+                            // Watch out for Cross Site Scripting security issues when setting dynamic content!
+                            $(this).text(callback.textinformation  + '!');
+                        },
+                        error: function() {
+                            $(this).html("error!");
+                        }
+                    });
+                });
+        </script>
+    </body>
 </html>

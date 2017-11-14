@@ -1,9 +1,13 @@
-from xlrd import open_workbook
-from xlutils.copy import copy
 import json
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 import watson_developer_cloud.natural_language_understanding.features.v1 \
   as Features
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+ username="3a1f4a06-4cbd-4193-81e7-a698805aef3e",
+ password="BGIu8SBYwgB3",
+ version="2017-02-27"
+)
 
 def GetMiddleStr(target,frontStr,backStr):
   frontIndex = target.index(frontStr)
@@ -19,7 +23,7 @@ def GetLineStr(output):
         lines.append(oneline)
     return lines
 
-def GetKeyword(num):
+def GetKeyword(num,lines):
     key = []
     if num != 5:
         for i in range(1,num+1):
@@ -34,7 +38,7 @@ def GetKeyword(num):
             key.append(a)
     return key
 
-def GetAnger(num):
+def GetAnger(num,lines):
     anger = []
     if num != 5:
         for i in range(1,num+1):
@@ -49,7 +53,7 @@ def GetAnger(num):
             anger.append(a)
     return anger
 
-def GetJoy(num):
+def GetJoy(num,lines):
     joy = []
     if num != 5:
         for i in range(1,num+1):
@@ -64,7 +68,7 @@ def GetJoy(num):
             joy.append(a)
     return joy
 
-def GetSadness(num):
+def GetSadness(num,lines):
     sadness = []
     if num != 5:
         for i in range(1,num+1):
@@ -79,7 +83,7 @@ def GetSadness(num):
             sadness.append(a)
     return sadness
 
-def GetFear(num):
+def GetFear(num,lines):
     fear = []
     if num != 5:
         for i in range(1,num+1):
@@ -94,7 +98,7 @@ def GetFear(num):
             fear.append(a)
     return fear
 
-def GetDisgust(num):
+def GetDisgust(num,lines):
     disgust = []
     if num != 5:
         for i in range(1,num+1):
@@ -111,7 +115,7 @@ def GetDisgust(num):
             disgust.append(a)
     return disgust
 
-def GetEmotion(num):
+def GetEmotion(num,lines):
      emotion = []
      anger = GetMiddleStr(lines[-10], '"anger": ', ', ')
      emotion.append(anger)
@@ -139,51 +143,40 @@ def input():
     strings = raw_input("Please input the target text:\n")
     return strings
 
-natural_language_understanding = NaturalLanguageUnderstandingV1(
-  username="3a1f4a06-4cbd-4193-81e7-a698805aef3e",
-  password="BGIu8SBYwgB3",
-  version="2017-02-27"
-)
 
-response = natural_language_understanding.analyze(
-  text=input(),
-  features=[
-      Features.Emotion(),
-      Features.Keywords(
-      emotion=True,
-      sentiment=True,
-      limit=5
+
+
+def sentiment_output(shuru):
+    response = natural_language_understanding.analyze(
+        text = shuru,
+        features=[
+            Features.Emotion(),
+            Features.Keywords(
+                emotion=True,
+                sentiment=True,
+                limit=5
+            )
+        ]
     )
-  ]
-)
 
-output=json.dumps(response, indent=2)
-lines = GetLineStr(output)
+    output = json.dumps(response,indent=2)
+    lines = GetLineStr(output)
 
-rows = len(lines)
-num = (rows-21)/14
+    rows = len(lines)
+    num = (rows-21)/14
 
-key = GetKeyword(num)
-anger = GetAnger(num)
-joy = GetJoy(num)
-sadness = GetSadness(num)
-fear = GetFear(num)
-disgust = GetDisgust(num)
-emotion = GetEmotion(num)
+    key = GetKeyword(num,lines)
+    anger = GetAnger(num,lines)
+    joy = GetJoy(num,lines)
+    sadness = GetFear(num,lines)
+    fear = GetFear(num,lines)
+    disgust = GetDisgust(num,lines)
+    emotion = GetEmotion(num,lines)
 
+    sum1 = key + anger + joy + sadness + fear + disgust + emotion
 
-print(key)
-print(anger)
-print(joy)
-print(sadness)
-print(fear)
-print(disgust)
-print(emotion)
+    return (sum1)
 
-outputToText(key)
-outputToText(anger)
-outputToText(joy)
-outputToText(sadness)
-outputToText(fear)
-outputToText(disgust)
-outputToText(emotion)
+aa = "I love tom and bannana"
+bb = sentiment_output(aa)
+print(bb)
