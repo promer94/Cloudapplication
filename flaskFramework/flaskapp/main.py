@@ -1,10 +1,22 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
+import flask_cors
+import google.auth.transport.requests
+import google.oauth2.id_token
+import requests_toolbelt.adapters.appengine
+
 
 app = Flask(__name__)
+flask_cors.CORS(app)
+
 
 @app.route('/')
 def index():
     return render_template('home.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 
 @app.route('/about')
 def about():    
