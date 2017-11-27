@@ -9,5 +9,5 @@ This will download and install the dependencies listed in package.json.
 6) if you want to testing it using google dev_appserver.py.  The backend URL should be http://localhost:8080/.
 7) Install dependencies using pip:
       pip install -r requirements.txt
-8)using the following command:
+8) using the following command:
    python main.py
