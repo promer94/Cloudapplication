@@ -1,6 +1,4 @@
 import React from 'react';
-// import { form, FormGroup } from 'react-dom';
-// import ReactDOM from 'react-dom';
 import { Button, Grid, Row, Col } from "react-bootstrap";
 
 class LoginWindow extends React.Component {

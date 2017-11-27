@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset = "utf-8">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-		<script src="../static/main.js"></script>
-        <link rel="stylesheet" href="../static/dist/styles.css">
-        <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/ui/live/1.0/firebase-ui-auth.js"></script>
-        <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/1.0/firebase-ui-auth.css">
 
-		<meta charset="utf-8" http-equiv="encoding">
-		<!-- Latest compiled and minified bootstrap CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
-		<!-- Load our custom stylesheet -->
-	
-		<title>SocialFamily Python Application with NPM, React.js and Webpack</title>   
-    </head>
-    <body>
-        {% include 'includes/_navbar.html'%}
-       		<div class ="container">
-            {% block body %}{% endblock %}
-        	</div> 
-        </script>
-    </body>
+<head>
+	<meta charset="utf-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<meta charset="utf-8" http-equiv="encoding">
+	<!-- Latest compiled and minified bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+	<!-- Load our custom stylesheet -->
+	<link rel="stylesheet" href="../static/dist/styles.css">
+
+	<meta name="google-signin-client_id" content="391803100925-vionpfd5f89onvota5pbqq8rv5u0jt6n.apps.googleusercontent.com">
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+	<script src="../static/js/function.js"></script>
+
+	<title>SocialFamily Python Application with NPM, React.js and Webpack</title>
+</head>
+
+<body>
+	{% include 'includes/_navbar.html'%}
+	<div class="container">
+		{% block body %}{% endblock %}
+	</div>
+</body>
+
 </html>
