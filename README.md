@@ -38,12 +38,20 @@ These steps are used to build a TaskList application with the Google Cloud Datas
 * 1. Prerequisites
       (i)   A Google Cloud Platform Console project with the Cloud Datastore API enabled
             In order to authenticate to a Cloud API, follow these steps:
-            - [Create a service account key using GCP Console/GCloud] (https://console.cloud.google.com/apis/credentials/serviceaccountkey?authuser=0&_ga=2.32592958.-1837838245.1507538919)
+
+            - [Create a service account key using GCP Console/GCloud] 
+            (https://console.cloud.google.com/apis/credentials/serviceaccountkey?authuser=0&_ga=2.32592958.-1837838245.1507538919)
+
             - From the Service account dropdown, select New service account.
+
             - Input a name into the Service account name form field.
+
             - From the Role dropdown, select Project > Owner.
+
             - Click the Create button. A JSON file that contains your key downloads to your computer.
+
             - Provide the credentials to your application code by setting the environment variable GOOGLE_APPLICATION_CREDENTIALS to point to the JSON file you downloaded in the previous step:
+            
                     set GOOGLE_APPLICATION_CREDENTIALS=<path_to_service_account_file>
               
       (ii)  An active App Engine Application: Open the App Engine dashboard and confirm your project has an active App Engine app. 
@@ -63,13 +71,12 @@ Create an App Engine app if needed. The app must not be disabled.
   (v)	  Change directories to the TaskList application:
 
 	      	cd python-docs-samples-master/datastore/cloud-client
-  (vi)	 Confirm if the requirements.txt file contains the following:
-		      google-cloud-datastore==1.4.0
+  (vi)	 Confirm if the requirements.txt file contains the following and then install dependencies:
+		      
+          google-cloud-datastore==1.4.0
+          pip install -r requirements.txt
 
-	      Install dependencies:
-
-	      	pip install -r requirements.txt
-  (vii)	  Run the application! Use the ID of your Google Cloud Platform project for <project-id>.
+  (vii)	  Run the application! Use the ID of your Google Cloud Platform project for project-id.
 
           python tasks.py --project-id <project-id> new MySampleSandbox
 
