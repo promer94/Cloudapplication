@@ -5,8 +5,8 @@ import watson_developer_cloud.natural_language_understanding.features.v1 \
   as Features
 
 natural_language_understanding = NaturalLanguageUnderstandingV1(
-    username="3a1f4a06-4cbd-4193-81e7-a698805aef3e",
-    password="BGIu8SBYwgB3",
+    username="02fb23e9-20d1-47da-bfa8-f380cb1a0bc9",
+    password="gk3oevbKk7gD",
     version="2017-02-27"
     )
 
