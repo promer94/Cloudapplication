@@ -6,8 +6,9 @@ from functools import wraps
 # https://code.google.com/apis/console
 GOOGLE_CLIENT_ID = '119855237642-p3ckimhcgmb2ljnigcegvrh1v43eb1ba.apps.googleusercontent.com'
 GOOGLE_CLIENT_SECRET = 'eVGXh0tufuuqgY5YK0zz0Sck'
-REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
- 
+# one of the Redirect URIs from Google APIs console
+REDIRECT_URI = '/oauth2callback'
+
 SECRET_KEY = 'development key'
 
 
@@ -24,22 +25,30 @@ google = oauth.remote_app('google',
                                                 'response_type': 'code'},
                           access_token_url='https://accounts.google.com/o/oauth2/token',
                           access_token_method='POST',
-                          access_token_params={'grant_type': 'authorization_code'},
+                          access_token_params={
+                              'grant_type': 'authorization_code'},
                           consumer_key=GOOGLE_CLIENT_ID,
                           consumer_secret=GOOGLE_CLIENT_SECRET)
 
 
+#@app.before_request
+# def before_request():
+#    if request.url.startswith('http://'):
+#        url = request.url.replace('http://', 'https://', 1)
+#        code = 301
+#        return redirect(url, code=code)
 
 @app.route('/')
+#@app.before_request
 def index():
     access_token = session.get('access_token')
     if access_token is None:
         return redirect(url_for('home'))
- 
+
     access_token = access_token[0]
     from urllib2 import Request, urlopen, URLError
- 
-    headers = {'Authorization': 'OAuth '+access_token}
+
+    headers = {'Authorization': 'OAuth ' + access_token}
     req = Request('https://www.googleapis.com/oauth2/v1/userinfo',
                   None, headers)
     try:
@@ -50,26 +59,27 @@ def index():
             session.pop('access_token', None)
             return redirect(url_for('login'))
         return res.read()
-    
+
     session['logged_in'] = True
     session['user_info'] = res.read()
     return redirect(url_for('dashborad'))
+
 
 @app.route('/home')
 def home():
     return render_template('home.html')
 
 
-
 @app.route('/login')
 def login():
-    flash('You are now logged in', 'success')
-    callback=url_for('authorized', _external=True)
+    callback = url_for('authorized', _external=True)
     return google.authorize(callback=callback)
 
+
 @app.route('/about')
-def about():    
+def about():
     return render_template('about.html')
+
 
 def is_logged_in(f):
     @wraps(f)
@@ -85,6 +95,7 @@ def is_logged_in(f):
 @app.route('/dashborad')
 @is_logged_in
 def dashborad():
+    flash('You are now logged in', 'success')
     return render_template('dashborad.html')
 
 
@@ -102,11 +113,12 @@ def authorized(resp):
     access_token = resp['access_token']
     session['access_token'] = access_token, ''
     return redirect(url_for('index'))
- 
- 
+
+
 @google.tokengetter
 def get_access_token():
     return session.get('access_token')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

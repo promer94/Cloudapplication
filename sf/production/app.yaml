@@ -10,7 +10,3 @@ handlers:
 - url: /.*
   script: main.app
 # [END handlers]
-env_variables:
-  GOOGLE_CLIENT_ID: '119855237642-p3ckimhcgmb2ljnigcegvrh1v43eb1ba.apps.googleusercontent.com'
-  GOOGLE_CLIENT_SECRET: 'eVGXh0tufuuqgY5YK0zz0Sck'
-  REDIRECT_URI: '/oauth2callback'
