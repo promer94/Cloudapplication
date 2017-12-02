@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for, session
+from flask import Flask, flash, render_template, jsonify, request, redirect, url_for, session
 from flask_oauth import OAuth
 from functools import wraps
 
@@ -63,23 +63,38 @@ def home():
 
 @app.route('/login')
 def login():
+    flash('You are now logged in', 'success')
     callback=url_for('authorized', _external=True)
     return google.authorize(callback=callback)
-
-@app.route('/dashborad')
-def dashborad():
-    return render_template('dashborad.html')
-
 
 @app.route('/about')
 def about():    
     return render_template('about.html')
 
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized, Please login', 'danger')
+            return redirect(url_for('home'))
+    return wrap
+
+
+@app.route('/dashborad')
+@is_logged_in
+def dashborad():
+    return render_template('dashborad.html')
+
+
 @app.route('/logout')
+@is_logged_in
 def logout():
-    session.pop('logged_in', False)    
-    session.pop('access_token', None)
+    session.clear()
+    flash('You are now logged out', 'success')
     return redirect(url_for('index'))
+
 
 @app.route(REDIRECT_URI)
 @google.authorized_handler
