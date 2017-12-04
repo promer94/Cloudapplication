@@ -1,7 +1,7 @@
 from flask import Flask, flash, render_template, jsonify, request, redirect, url_for, session
 from flask_oauth import OAuth
 from functools import wraps
-
+import simplejson as json
 # You must configure these 3 values from Google APIs console
 # https://code.google.com/apis/console
 GOOGLE_CLIENT_ID = '119855237642-p3ckimhcgmb2ljnigcegvrh1v43eb1ba.apps.googleusercontent.com'
@@ -61,7 +61,14 @@ def index():
         return res.read()
 
     session['logged_in'] = True
-    session['user_info'] = res.read()
+    user_dict = json.loads(res.read().decode("utf-8"))
+    
+    session['user_id'] = user_dict['id']
+    session['user_email'] = user_dict['email']
+    session['user_name'] = user_dict['name']
+    session['user_given_name'] = user_dict['given_name']
+    session['user_family_name'] = user_dict['family_name']
+    session['user_picture'] = user_dict['picture']
     return redirect(url_for('dashborad'))
 
 
