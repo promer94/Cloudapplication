@@ -13,9 +13,9 @@ flask_cors.CORS(app)
 def index():
     return render_template('home.html')
 
-# @app.route('/login')
-# def login():
-#     return render_template('login.html')
+@app.route('/main')
+def login():
+    return render_template('main.html')
 
 @app.route('/about')
 def about():
