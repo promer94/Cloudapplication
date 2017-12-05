@@ -36,7 +36,6 @@ google = oauth.remote_app('google',
                           consumer_secret=GOOGLE_CLIENT_SECRET)
 
 
-
 #@app.before_request
 # def before_request():
 #    if request.url.startswith('http://'):
@@ -72,12 +71,11 @@ def is_logged_in(f):
     return wrap
 
 
-
 @app.route('/register')
 @is_logged_in
 def register():
-    pass;
-
+    flash('Hello New Friend!', 'success')
+    return render_template('dashborad.html')
 
 
 @app.route('/dashborad')
@@ -135,20 +133,24 @@ def loginWithgoogle():
 
     session['logged_in'] = True
     user_dict = json.loads(res.read().decode("utf-8"))
-    
+
     session['user_id'] = user_dict['id']
     session['user_email'] = user_dict['email']
     session['user_name'] = user_dict['name']
     #session['user_given_name'] = user_dict['given_name']
     #session['user_family_name'] = user_dict['family_name']
     session['user_picture'] = user_dict['picture']
-    
+
     new_user = {'googleId': user_dict['id'],
                 'email': user_dict['email'],
                 'picture_link': user_dict['picture']
-    }
-    collection.insert_one(new_user)
-    return redirect(url_for('dashborad'))
+                }
+    if(collection.find({'googleId': user_dict['id']}).count() == 0):
+        collection.insert_one(new_user)
+        return redirect(url_for('register'))
+    else:
+        return redirect(url_for('dashborad'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
