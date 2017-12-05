@@ -41,35 +41,7 @@ google = oauth.remote_app('google',
 @app.route('/')
 #@app.before_request
 def index():
-    access_token = session.get('access_token')
-    if access_token is None:
-        return redirect(url_for('home'))
-
-    access_token = access_token[0]
-    from urllib2 import Request, urlopen, URLError
-
-    headers = {'Authorization': 'OAuth ' + access_token}
-    req = Request('https://www.googleapis.com/oauth2/v1/userinfo',
-                  None, headers)
-    try:
-        res = urlopen(req)
-    except URLError, e:
-        if e.code == 401:
-            # Unauthorized - bad token
-            session.pop('access_token', None)
-            return redirect(url_for('login'))
-        return res.read()
-
-    session['logged_in'] = True
-    user_dict = json.loads(res.read().decode("utf-8"))
-    
-    session['user_id'] = user_dict['id']
-    session['user_email'] = user_dict['email']
-    session['user_name'] = user_dict['name']
-    session['user_given_name'] = user_dict['given_name']
-    session['user_family_name'] = user_dict['family_name']
-    session['user_picture'] = user_dict['picture']
-    return redirect(url_for('dashborad'))
+    return loginWithgoogle()
 
 
 @app.route('/home')
@@ -125,6 +97,38 @@ def authorized(resp):
 @google.tokengetter
 def get_access_token():
     return session.get('access_token')
+
+
+def loginWithgoogle():
+    access_token = session.get('access_token')
+    if access_token is None:
+        return redirect(url_for('home'))
+
+    access_token = access_token[0]
+    from urllib2 import Request, urlopen, URLError
+
+    headers = {'Authorization': 'OAuth ' + access_token}
+    req = Request('https://www.googleapis.com/oauth2/v1/userinfo',
+                  None, headers)
+    try:
+        res = urlopen(req)
+    except URLError, e:
+        if e.code == 401:
+            # Unauthorized - bad token
+            session.pop('access_token', None)
+            return redirect(url_for('login'))
+        return res.read()
+
+    session['logged_in'] = True
+    user_dict = json.loads(res.read().decode("utf-8"))
+    
+    session['user_id'] = user_dict['id']
+    session['user_email'] = user_dict['email']
+    session['user_name'] = user_dict['name']
+    session['user_given_name'] = user_dict['given_name']
+    session['user_family_name'] = user_dict['family_name']
+    session['user_picture'] = user_dict['picture']
+    return redirect(url_for('dashborad'))
 
 
 if __name__ == '__main__':
