@@ -2,28 +2,21 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-	<meta charset="utf-8" http-equiv="encoding">
-	<!-- Latest compiled and minified bootstrap CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
-	<!-- Load our custom stylesheet -->
-	<link rel="stylesheet" href="../static/dist/styles.css">
-
-	<meta name="google-signin-client_id" content="391803100925-vionpfd5f89onvota5pbqq8rv5u0jt6n.apps.googleusercontent.com">
-	<script src="https://apis.google.com/js/platform.js" async defer></script>
-
-	<script src="../static/js/function.js"></script>
-
-	<title>SocialFamily Python Application with NPM, React.js and Webpack</title>
+    <meta charset="utf-8">
+    <meta charset="utf-8" http-equiv="encoding">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+    <link href="../static/css/main.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <title>SocialFamily | Web chat designed for kids</title>
 </head>
 
 <body>
-	{% include 'includes/_navbar.html'%}
-	<div class="container">
-		{% block body %}{% endblock %}
-	</div>
+    {% include 'includes/_navbar.html'%}
+    <div class="container">
+        {% include 'includes/_messages.html' %} {% block body %}{% endblock %}
+    </div>
+    </script>
 </body>
 
 </html>

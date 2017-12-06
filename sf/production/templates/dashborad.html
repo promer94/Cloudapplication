@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class ="container">
+        <ul class="list-unstyled">
+                <li>
+                <img src="{{session.user_picture}}" alt="picture" height="256" width="256">
+                </li>
+                <li>
+                <h2><small>{{session.user_email}}</small></h2> 
+                </li>
+                <li>
+                <h2><small>{{session.user_name}}</small></h2>   
+                </li>
+        </ul>        
+</div> 
+{% endblock%}
