@@ -4,6 +4,7 @@ post /api/addAdultContact
 }
 {
     session : boolean,
+    userRegistered : boolean,
     added : boolean    
 }
 

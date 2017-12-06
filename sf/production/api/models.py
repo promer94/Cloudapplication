@@ -41,7 +41,6 @@ class accounts(object):
     # throws if family exists
     # throws if adult exists
     def createAccount(self, familyId, adultId):
-        print(self.familys)
         if self.getFamily(familyId):
             raise Exception('family already exisits')
 
