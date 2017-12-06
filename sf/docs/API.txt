@@ -3,7 +3,6 @@ post /api/addAdultContact
     id: "job.blog@gmail.com"
 }
 {
-    session : boolean,
     added : boolean    
 }
 
@@ -13,7 +12,6 @@ post /api/registerUser
     familyId: "GUID"
 }
 {
-    session : boolean,
     success : boolean
 }
 
@@ -21,21 +19,18 @@ post /api/registerUser
 // session in progress
 get /api/contacts
 {
-    session : boolean,
     contacts : { {name : "", id : ""} , .....}
 }
 
 // session in progress
 Delete /api/contacts?id="joe.blog@gmail.com"
 {
-    session : boolean,
     deleted : boolean
 }
 
 // start chat session
 get /api/chatSession?id="joe.blog@gmail.com"
 {
-    session : boolean,
     token : { channel : "id:id" , twilioToken : object } 
 }
 

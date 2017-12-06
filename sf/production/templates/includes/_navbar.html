@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <div class = "container">
         
-        <a class="navbar-brand" href="#">Soical-familiy</a>
+        <div class="navbar-header">
+          <a class =navbar-brand>Social-family</a>
+        </div>
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
           <ul class="navbar-nav nav">
             <li class="nav-item active">
@@ -12,9 +14,15 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+          {% if session.logged_in %}
+              <li class="nav-item">
+                  <a class="nav-link" href="/logout">Logout</a>
+                </li>
+          {% else %}  
             <li class="nav-item">
               <a class="nav-link" href="/login">Login</a>
             </li>
+          {% endif %}
           </ul>
         </div>
     </div>
