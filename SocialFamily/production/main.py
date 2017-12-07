@@ -36,15 +36,7 @@ google = oauth.remote_app('google',
                           consumer_secret=GOOGLE_CLIENT_SECRET)
 
 
-#@app.before_request
-# def before_request():
-#    if request.url.startswith('http://'):
-#        url = request.url.replace('http://', 'https://', 1)
-#        code = 301
-#        return redirect(url, code=code)
-
 @app.route('/')
-#@app.before_request
 def index():
     return loginWithgoogle()
 
@@ -137,8 +129,6 @@ def loginWithgoogle():
     session['user_id'] = user_dict['id']
     session['user_email'] = user_dict['email']
     session['user_name'] = user_dict['name']
-    #session['user_given_name'] = user_dict['given_name']
-    #session['user_family_name'] = user_dict['family_name']
     session['user_picture'] = user_dict['picture']
 
     new_user = {'googleId': user_dict['id'],
