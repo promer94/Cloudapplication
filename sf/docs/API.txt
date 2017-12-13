@@ -4,16 +4,16 @@ post /api/addAdultContact
 }
 {
     session : boolean,
+    userRegistered : boolean,
     added : boolean    
 }
 
 post /api/registerUser
 {
     id: "joe.blog@gmail.com"
-    familyId: "GUID"
+    pin: "1234"
 }
 {
-    session : boolean,
     success : boolean
 }
 
@@ -38,5 +38,7 @@ get /api/chatSession?id="joe.blog@gmail.com"
     session : boolean,
     token : { channel : "id:id" , twilioToken : object } 
 }
+
+
 
 
