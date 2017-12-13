@@ -9,10 +9,10 @@ post /api/addAdultContact
 
 post /api/registerUser
 {
-    id: "joe.blog@gmail.com"
     pin: "1234"
 }
 {
+    alreadyRegistered : boolean 
     success : boolean
 }
 
@@ -35,6 +35,19 @@ get /api/chatSession?id="joe.blog@gmail.com"
     token : { channel : "id:id" , twilioToken : object } 
 }
 
+// lock session for child use, prevents editing of contacts
+get /api/lockSession
+{
+    valid : boolean
+}
+
+post /api/unlockSession
+{
+    pin : "1234"
+}
+{
+    validPin : true
+}
 
 
 
