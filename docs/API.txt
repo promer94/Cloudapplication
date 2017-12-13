@@ -1,0 +1,40 @@
+post /api/addAdultContact
+{
+    id: "job.blog@gmail.com"
+}
+{
+    userRegistered : boolean,
+    added : boolean    
+}
+
+post /api/registerUser
+{
+    id: "joe.blog@gmail.com"
+    pin: "1234"
+}
+{
+    success : boolean
+}
+
+
+// session in progress
+get /api/contacts
+{
+    contacts : { {name : "", id : ""} , .....}
+}
+
+// session in progress
+Delete /api/contacts?id="joe.blog@gmail.com"
+{
+    deleted : boolean
+}
+
+// start chat session
+get /api/chatSession?id="joe.blog@gmail.com"
+{
+    token : { channel : "id:id" , twilioToken : object } 
+}
+
+
+
+

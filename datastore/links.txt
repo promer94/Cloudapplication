@@ -1,7 +1,0 @@
-https://cloud.google.com/datastore/docs/datastore-api-tutorial
-
-https://cloud.google.com/docs/authentication/getting-started
-
-https://cloud.google.com/docs/authentication/getting-started#auth-cloud-implicit-python
-
-
