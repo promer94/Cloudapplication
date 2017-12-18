@@ -27,7 +27,7 @@
     display:inline-block;
     margin-right:5px;
 }
-section input {
+#chat-input{
     display:block;
     height:52px;
     width:500px;
