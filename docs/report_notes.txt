@@ -47,10 +47,13 @@ This has lead us to make use of the following:
 10) Bable - platform portability, support for older browsers
 11) jinja2 - html templating framework
 
+Page 3:
 STATISTICS
+insert links and descriptions of twilio, google auth, IBM WATSON 
 Lines of code:
 Tool used for testing: Test results:
 
+Page 4:
 DESIGN & IMPLEMENTATION
 List of the four pages:
 1) index : decribes service 
@@ -67,6 +70,7 @@ in addition to this perminant data storage is implemted sever side in the for of
 
 Also we wrap the use of IBM watson behind our own REST API
 
+Page 5:
 CRITICAL EVALUATION
 --- insert later once we have something to critque 
 
