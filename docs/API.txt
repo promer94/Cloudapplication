@@ -49,5 +49,18 @@ post /api/unlockSession
     validPin : true
 }
 
+get /api/sentimentAnalysis
+{
+    chatHistory: string
+}
+{
+    keyWords: [string,...],
+    agner: float, // 0.0 to 1.0
+    joy: float,
+    sadness: float,
+    fear: float,
+    disgust: float,
+    emotion: float
+}
 
 
