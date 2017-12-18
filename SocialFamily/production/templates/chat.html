@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block body %}
+<section>
+    <div id="chat-messages"></div>
+    <input id="chat-input" type="text" placeholder="say anything" autofocus/>
+  </section>
+
+  <script src="https://media.twiliocdn.com/sdk/js/chat/v1.0/twilio-chat.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="../static/dist/chat.js"></script>
+{% endblock %}
