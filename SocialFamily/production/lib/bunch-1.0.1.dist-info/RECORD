@@ -1,0 +1,11 @@
+bunch/__init__.py,sha256=FRfgBwk31pW9uPwzkc7PMO6rsjht1C-R8gdkKbFkY4g,13203
+bunch/test.py,sha256=6QLuwWCKryW4jqAqYJJzJKh45yteix2857srnXCbIA8,161
+bunch-1.0.1.dist-info/DESCRIPTION.rst,sha256=HKQFFbXpxVz5zdi9mOPKSsbXP5SIYav0XxCYUnADIQw,2615
+bunch-1.0.1.dist-info/METADATA,sha256=AtNgr7WcI3FnQffbNixyIWAQpx3T4mkUHa_xHVQ_wwE,3452
+bunch-1.0.1.dist-info/RECORD,,
+bunch-1.0.1.dist-info/WHEEL,sha256=UMxW5ad6zjudXe4jPWTM-wnTIGreEj2qx-IkE2LS1Rk,93
+bunch-1.0.1.dist-info/metadata.json,sha256=8t0l1aJ9Lq2rO9s4TPj8bswH40WfpW3yTFL4g5xDyEs,965
+bunch-1.0.1.dist-info/top_level.txt,sha256=A1w3sDjR8t1mZ4GDuhD9afxgybqy6nHJHPA4CbrgFRA,6
+bunch-1.0.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+bunch/__pycache__/__init__.cpython-36.pyc,,
+bunch/__pycache__/test.cpython-36.pyc,,

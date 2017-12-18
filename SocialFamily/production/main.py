@@ -20,27 +20,30 @@ dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
 
-#Set up Google SignIn 
-GOOGLE_CLIENT_ID = '119855237642-p3ckimhcgmb2ljnigcegvrh1v43eb1ba.apps.googleusercontent.com'
-GOOGLE_CLIENT_SECRET = 'eVGXh0tufuuqgY5YK0zz0Sck'
-REDIRECT_URI = '/oauth2callback'
-SECRET_KEY = 'development key'
+# Set up Google SignIn
+GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
+GOOGLE_CLIENT_SECRET = os.environ['GOOGLE_CLIENT_SECRET']
+REDIRECT_URI = os.environ['REDIRECT_URI']
+SECRET_KEY = os.environ['SECRET_KEY']
 
-#Set up MongoDB
-client = MongoClient('mongodb://user:Sanbao941104@socialfamily-shard-00-00-03pay.mongodb.net:27017,socialfamily-shard-00-01-03pay.mongodb.net:27017,socialfamily-shard-00-02-03pay.mongodb.net:27017/test?ssl=true&replicaSet=SocialFamily-shard-0&authSource=admin')
+# Set up MongoDB
+client = MongoClient(os.environ['MONGODB_URI'])
 db = client.SocialFamily
 collection = db.user
 
-#Set up Twilio API
-TWILIO_ACCOUNT_SID=os.environ['TWILIO_ACCOUNT_SID'],
-TWILIO_API_KEY=os.environ['TWILIO_API_KEY'],
-TWILIO_API_SECRET=(os.environ['TWILIO_API_SECRET']),
-TWILIO_CHAT_SERVICE_SID=os.environ['TWILIO_CHAT_SERVICE_SID'],
-TWILIO_SYNC_SERVICE_SID=os.environ['TWILIO_SYNC_SERVICE_SID'],
+# Set up Twilio API
+TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID'],
+TWILIO_API_KEY = os.environ['TWILIO_API_KEY'],
+TWILIO_API_SECRET = (os.environ['TWILIO_API_SECRET']),
+TWILIO_CHAT_SERVICE_SID = os.environ['TWILIO_CHAT_SERVICE_SID'],
+TWILIO_SYNC_SERVICE_SID = os.environ['TWILIO_SYNC_SERVICE_SID'],
 
 # Convert keys to snake_case to conform with the twilio-python api definition contract
+
+
 def snake_case_keys(somedict):
     return dict(map(lambda (key, value): (underscore(key), value), somedict.items()))
+
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -60,7 +63,6 @@ google = oauth.remote_app('google',
                           consumer_secret=GOOGLE_CLIENT_SECRET)
 
 
-
 @app.route('/')
 def index():
     return loginWithgoogle()
@@ -76,6 +78,7 @@ def login():
     callback = url_for('authorized', _external=True)
     return google.authorize(callback=callback)
 
+
 @app.route('/config')
 def config():
     print 'Setting up config'
@@ -88,8 +91,6 @@ def config():
         TWILIO_CHAT_SERVICE_SID=os.environ['TWILIO_CHAT_SERVICE_SID'],
         TWILIO_SYNC_SERVICE_SID=os.environ['TWILIO_SYNC_SERVICE_SID'],
     )
-
-
 
 
 @app.route('/register', methods=['POST'])
@@ -119,6 +120,7 @@ def register():
     # Return success message
     return jsonify(message="Binding created!")
 
+
 def is_logged_in(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -137,12 +139,10 @@ def dashborad():
     return render_template('dashborad.html')
 
 
-
 @app.route('/chat')
 @is_logged_in
 def chat():
     return render_template('chat.html')
-
 
 
 @app.route('/logout')
@@ -159,13 +159,14 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/token', methods = ['GET'])
+@app.route('/token', methods=['GET'])
 @is_logged_in
 def userToken():
     user_name = session['user_email']
     return generateToken(user_name)
-    
-@app.route('/token', methods = ['POST'])
+
+
+@app.route('/token', methods=['POST'])
 @is_logged_in
 def createToken():
     user_name = session['user_email']
@@ -173,11 +174,11 @@ def createToken():
     identity = content.get('identity',  user_name)
     return generateToken(identity)
 
+
 @app.route('/token/<identity>', methods=['POST', 'GET'])
 @is_logged_in
 def token(identity):
     return generateToken(identity)
-
 
 
 @app.route(REDIRECT_URI)
@@ -186,10 +187,6 @@ def authorized(resp):
     access_token = resp['access_token']
     session['access_token'] = access_token, ''
     return redirect(url_for('index'))
-
-#@app.route('/<path:path>')
-#def static_file(path):
-#    return app.send_static_file(path)
 
 
 @google.tokengetter
@@ -235,6 +232,7 @@ def loginWithgoogle():
     else:
         return redirect(url_for('dashborad'))
 
+
 def generateToken(identity):
     # get credentials for environment variables
     account_sid = os.environ['TWILIO_ACCOUNT_SID']
@@ -262,9 +260,6 @@ def generateToken(identity):
 
     # Return token info as JSON
     return jsonify(identity=identity, token=token.to_jwt().decode('utf-8'))
-
-
-
 
 
 if __name__ == '__main__':

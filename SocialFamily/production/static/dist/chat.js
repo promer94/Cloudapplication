@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     // Get handle to the chat div 
     var $chatWindow = $('#chat-messages');
 
@@ -7,7 +7,7 @@ $(function() {
 
     // A handle to the "general" chat channel - the one and only channel we
     // will have in this sample app
-    var privateChannel;
+    var generalChannel;
 
     // The server will assign the client a random username - store that value
     // here
@@ -45,40 +45,35 @@ $(function() {
     // value "browser"
     $.getJSON('/token', {
         device: 'browser'
-    }, function(data) {
+    }, function (data) {
         // Alert the user they have been assigned a random username
         username = data.identity;
-        print('Hello ' 
-            + '<span class="me">' + username + '</span>', true);
+        print('Hello: ' +
+            '<span class="me">' + username + '</span>', true);
 
         // Initialize the Chat client
         chatClient = new Twilio.Chat.Client(data.token);
-        chatClient.getSubscribedChannels().then(createOrJoinPrivateChannel);        
+        chatClient.getSubscribedChannels().then(createOrJoinGeneralChannel);
     });
 
-    function createOrJoinPrivateChannel() {
+    function createOrJoinGeneralChannel() {
         // Get the general chat channel, which is where all the messages are
         // sent in this simple application
-        chatClient.on('channelInvited', function(channel) {
-        console.log('Invited to channel ' + channel.friendlyName);
-  // Join the channel that you were invited to
-        channel.join();}
-);
-        print('Attempting to join "Private" chat channel...');
-        var promise = chatClient.getChannelByUniqueName('private');
-        promise.then(function(channel) {
-            privateChannel = channel;
-            console.log('Found private channel:');
-            console.log(privateChannel);
+        print('Attempting to join "general" chat channel...');
+        var promise = chatClient.getChannelByUniqueName('general');
+        promise.then(function (channel) {
+            generalChannel = channel;
+            console.log('Found general channel:');
+            console.log(generalChannel);
             setupChannel();
-        }).catch(function() {
+        }).catch(function () {
             // If it doesn't exist, let's create it
-            console.log('Creating private channel');
+            console.log('Creating general channel');
             chatClient.createChannel({
-                uniqueName: 'private',
-                friendlyName: 'Private Chat Channel'
-            }).then(function(channel) {
-                console.log('Created Private channel:');
+                uniqueName: 'general',
+                friendlyName: 'General Chat Channel'
+            }).then(function (channel) {
+                console.log('Created general channel:');
                 console.log(channel);
                 generalChannel = channel;
                 setupChannel();
@@ -89,25 +84,22 @@ $(function() {
     // Set up channel after it has been found
     function setupChannel() {
         // Join the general channel
-        privateChannel.join().then(function(channel) {
-            print('Joined channel as ' 
-                + '<span class="me">' + username + '</span>.', true);
+        generalChannel.join().then(function (channel) {
+            print('Joined channel as ' +
+                '<span class="me">' + username + '</span>.', true);
         });
 
         // Listen for new messages sent to the channel
-        privateChannel.on('messageAdded', function(message) {
+        generalChannel.on('messageAdded', function (message) {
             printMessage(message.author, message.body);
         });
-        privateChannel.invite('overwatch793@gmail.com').then(function() {
-        console.log('Your friend has been invited!');
-});
     }
 
     // Send a new message to the general channel
     var $input = $('#chat-input');
-    $input.on('keydown', function(e) {
+    $input.on('keydown', function (e) {
         if (e.keyCode == 13) {
-            privateChannel.sendMessage($input.val())
+            generalChannel.sendMessage($input.val())
             $input.val('');
         }
     });
