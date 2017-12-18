@@ -14,7 +14,7 @@ $(function () {
         // Initialize the Chat client
         chatClient = new Twilio.Chat.Client(data.token);
         chatClient.on('channelInvited', function (channel) {
-            console.log('You are invited to channel ' + channel.friendlyName);
+            alert('You are invited to channel ' + channel.friendlyName);
         });
         try {
             chatClient.getSubscribedChannels().then(function (paginator) {
@@ -36,16 +36,16 @@ $(function () {
                 $input.val('');
             }
         });
-        
+
         var $inviteInput = $('#Invite');
         $inviteInput.on('keydown', function (e) {
             if (e.keyCode == 13) {
-                currentChannel.invite($inviteInput.val()).then(function (){
-                console.log($inviteInput.val() + ' has been invited!');
+                currentChannel.invite($inviteInput.val()).then(function () {
+                    alert($inviteInput.val() + ' has been invited!');
                 })
-             emailinput.val('');
+                emailinput.val('');
             }
-        }); 
+        });
     });
 })
 
@@ -100,7 +100,7 @@ function createPrivateChannel(chatClient) {
 
 function acceptInvitation(chatClient) {
     chatClient.on('channelInvited', function (channel) {
-        console.log('Invited to channel ' + channel.friendlyName);
+        alert('Invited to channel ' + channel.friendlyName);
         // Join the channel that you were invited to
         channel.join().then(function () {
             print('Joined ' + channel.friendlyName + ' as ' +
@@ -116,7 +116,7 @@ function joinChannel(channel) {
     try {
         channel.join().then(function (channel) {
             print('Joined ' + channel.friendlyName + ' as ' +
-            '<span class="me">' + username + '</span>.', true);
+                '<span class="me">' + username + '</span>.', true);
             currentChannel = channel;
             currentChannel.getMessages().then(function (messages) {
                 const totalMessages = messages.items.length;
