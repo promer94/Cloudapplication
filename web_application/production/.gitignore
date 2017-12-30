@@ -1,0 +1,5 @@
+.vscode/
+lib
+env/
+.eslintrc.js
+.eslintrc.json
