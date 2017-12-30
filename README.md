@@ -2,7 +2,7 @@
 ---
 **chat** is used for create **static** file that should be hosted by our backend server. It is modified from [create-react-app](https://github.com/facebookincubator/create-react-app).  
 
-Before using it you need run
+* Before using it you need run
 ```bash
 npm install
 ```
@@ -12,13 +12,13 @@ yarn
 ```
 Then all the dependcies will installed. 
 
-Then you can run 
+* Then you can run 
 ```bash
 npm start
 ```
 It will start up a development server for you.  
 
-If you want to test it with the real backend. you need run
+* If you want to test it with the real backend. you need run
 ```bash
 npm build
 ```
