@@ -13,10 +13,12 @@ import Typography from "material-ui/Typography";
 import Divider from "material-ui/Divider";
 import Button from "material-ui/Button";
 import PersonInfoAvatars from "./PersonInfoAvatars";
-import ChannelCreator from "./ChannelCreator";
+//import ChannelCreator from "./ChannelCreator";
 import Chatwindow from "./ChatWindow";
 //import ContectList from "./ContectList";
 import Chat from "twilio-chat";
+import ChannelManager from "./ChannelManager";
+
 
 const axios = require("axios");
 
@@ -84,7 +86,8 @@ class HomePage extends React.Component {
       currentChannel: "",
       currentChannelName: "",
       twilioIdentity: "",
-      twilioToken: ""
+      twilioToken: "",
+      contectList:[],
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -120,7 +123,7 @@ class HomePage extends React.Component {
       .get("/token")
       .then(response => {
         if (!response.data.token) {
-          console.log(response);
+
         } else {
           let twilioIdentity = response.data.identity;
           let twilioToken = response.data.token;
@@ -129,9 +132,6 @@ class HomePage extends React.Component {
           this.setState({ twilioToken });
           this.setState({ currentChatClient: chatClient });
           this.setState({ isChatSetUp: true });
-          console.log("componentDidMount");
-          console.log(this.state.currentChatClient);
-          console.log(this.state.isChatSetUp);
         }
       })
       .catch(function(error) {
@@ -157,9 +157,6 @@ class HomePage extends React.Component {
   }
 
   render() {
-    console.log("render");
-    console.log(this.state.currentChatClient);
-    console.log(this.state.isChatSetUp);
     const { classes } = this.props;
     const isLogin = this.state.isLogin;
     const isChatSetUp = this.state.isChatSetUp;
@@ -196,18 +193,15 @@ class HomePage extends React.Component {
         <div id="Contects container">
           {isLogin ? (
             //Contect List
-            <div id="contects list">
+            <div id="contects list title">
               <Typography
                 type="title"
                 color="default"
                 children="Contect List"
                 noWrap
               />
-              <List />
-              <ChannelCreator
-                token={this.state.twilioToken}
-                changeChannel={this.changeChannel}
-              />
+              <Divider />
+              <ChannelManager changeChannel ={this.changeChannel}/>
             </div>
           ) : (
             <div id="loading list" />

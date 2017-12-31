@@ -7,6 +7,7 @@ import red from "material-ui/colors/red";
 import Chat from "twilio-chat";
 import Typography from "material-ui/Typography";
 
+
 const axios = require("axios");
 const styles = theme => ({
   chip: {
@@ -25,47 +26,93 @@ class ContectList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      chipData: [
-        { key: 0, label: "Angular" },
-        { key: 1, label: "JQuery" },
-        { key: 2, label: "Polymer" },
-        { key: 3, label: "ReactJS" },
-        { key: 4, label: "Vue.js" }
-      ]
+      contectList: [],
+      isListReady:false,
+      error:null,
+      chatClient:""
     };
+    this.loadCotectList = this.loadCotectList.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+ 
+    
+  }
+
+ loadCotectList(){
+    const setState = this.setState.bind(this);
+    const state  = this.state;
+    axios.get("/token").then(response => {
+      if (!response.data.token) {
+      console.log(response);
+      } else {
+          let twilioToken = response.data.token;
+          let chatClient = new Chat(twilioToken);
+          chatClient.getSubscribedChannels().then(function(paginator){
+          let contectList = paginator.items.map(data=>{return data})
+          console.log(contectList);
+          setState({contectList});
+          setState({isListReady:true})
+          setState({chatClient})
+          console.log(state);
+          });         
+        }
+    }).catch(function(error) {
+      setState({error})
+      console.log(state);
+   });
+  };
 
   handleDelete = data => () => {
-    const chipData = [...this.state.chipData];
-    const chipToDelete = chipData.indexOf(data);
-    chipData.splice(chipToDelete, 1);
-    this.setState({ chipData });
+    const contectList = [...this.state.contectList];
+    const contectToDelete = contectList.indexOf(data);
+    contectList[contectToDelete].delete().then(function(channel) {
+      console.log('Deleted channel: ' + channel.uniqueName);
+    })
+    contectList.splice(contectToDelete, 1);
+    this.setState({ contectList });
   };
+
+  handleClick = data => () =>{
+    const changeChannel = this.props.changeChannel;
+    const contectList = [...this.state.contectList];
+    const channelToJoin = contectList.indexOf(data);
+    changeChannel(contectList[channelToJoin]);
+    console.log('joined channel: ' + contectList[channelToJoin].uniqueName);
+  } 
 
   render() {
     const classes = this.props;
+    const {error, isListReady, contectList} = this.state;
     console.log("render page.");
+    if(error){
+      return <div id ="error happens"><Typography>Error: {error.message}</Typography></div>
+    } else if(!isListReady){
+      return <div id = 'loding'><Typography>Loading...</Typography></div>
+    } else{
     return (
       <div id="contects" className={classes.row}>
-        {this.state.chipData.map(data => {
+        {contectList.map(data => {
           return (
             <Chip
               avatar={
-                <Avatar>
+                 <Avatar>
                   <FaceIcon className={classes.svgIcon} />
                 </Avatar>
               }
-              label={data.label}
-              key={data.key}
+              label={data.uniqueName}
+              key={data.sid}
               onDelete={this.handleDelete(data)}
+              onClick ={this.handleClick(data)}
               className={classes.chip}
             />
           );
         })}
       </div>
     );
+    }
   }
 }
 

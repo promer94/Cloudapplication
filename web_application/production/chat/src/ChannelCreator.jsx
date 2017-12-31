@@ -6,6 +6,7 @@ import Icon from "material-ui/Icon";
 import Input from "material-ui/Input";
 import Divider from "material-ui/Divider";
 import Chat from "twilio-chat";
+
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit - 5,
@@ -82,7 +83,6 @@ class ChannelCreator extends React.Component {
             aria-label="add"
             className={classes.button}
             type="submit"
-            width={50}
           >
             <Icon color="contrast">add_circle</Icon>
           </Button>
