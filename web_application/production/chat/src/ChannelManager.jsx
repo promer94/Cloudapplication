@@ -154,7 +154,9 @@ class ChannelManager extends React.Component {
   handleChannelDelete = data => () => {
     const contectList = [...this.state.contectList];
     const contectToDelete = contectList.indexOf(data);
-    contectList[contectToDelete].delete().then(function(channel) {});
+    contectList[contectToDelete].delete().then(function(channel) {
+      
+    });
     //contectList.splice(contectToDelete, 1);
     //this.setState({ contectList });
   };
@@ -165,10 +167,13 @@ class ChannelManager extends React.Component {
     const contectList = [...this.state.contectList];
     const channelToJoin = contectList.indexOf(data);
     changeChannel(contectList[channelToJoin]);
-    contectList[channelToJoin].join().catch(function(err) {});
+    contectList[channelToJoin].join().catch(function(err) {
+      
+    });
 
     this.setState({ currentChannel: contectList[channelToJoin] });
     this.setState({ isChannelReady: true });
+    
   };
 
   //TODO:

@@ -7,6 +7,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
+
 //Material UI components
 import { withStyles } from "material-ui/styles";
 import Drawer from "material-ui/Drawer";
@@ -16,18 +17,20 @@ import Typography from "material-ui/Typography";
 import Divider from "material-ui/Divider";
 import Button from "material-ui/Button";
 
+
+
 //Original component
 import ChannelManager from "./ChannelManager";
 import Chatwindow from "./ChatWindow";
 import Clock from "./Clock";
 import PersonInfoAvatars from "./PersonInfoAvatars";
-import LockButton from "./LockButton";
-import PinWindow from "./PinWindow";
+
 
 //Twilio IP-Massages library
 import Chat from "twilio-chat";
 
-//AJAX library
+
+//AJAX library 
 const axios = require("axios");
 
 const drawerWidth = 280;
@@ -91,7 +94,7 @@ class HomePage extends React.Component {
       currentUserEmail: "",
       currentUserPicture: "",
       currentChatClient: "",
-      currentChannel: "",
+      currentChannel:"",
       twilioIdentity: "",
       twilioToken: "",
       contectList: []
@@ -99,8 +102,6 @@ class HomePage extends React.Component {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.changeChannel = this.changeChannel.bind(this);
-    this.changeIsFirstLogin = this.changeIsFirstLogin.bind(this);
-    this.changeIsLocked = this.changeIsLocked.bind(this);
   }
 
   componentDidMount() {
@@ -109,6 +110,7 @@ class HomePage extends React.Component {
       .get("/userinfo")
       .then(response => {
         if (!response.data.user_status) {
+          
         } else {
           let currentUserName = response.data.user_name;
           let currentUserEmail = response.data.user_email;
@@ -152,7 +154,7 @@ class HomePage extends React.Component {
 
   logout() {
     //Tell backend to clear all the session.
-    window.location.href = "https://127.0.0.1:5000/logout";
+    window.location.href = "http://127.0.0.1:5000/logout";
     this.setState({ isChatSetUp: false });
   }
 
@@ -163,34 +165,16 @@ class HomePage extends React.Component {
     this.setState({ isChatSetUp: true });
   }
 
-  //Show chat page after first time log in
-  changeIsFirstLogin() {
-    let isFirstLogin = false;
-    this.setState({ isFirstLogin });
-  }
-
-  //Lock or unlock the session
-  changeIsLocked(lockedStatus) {
-    let isLocked = lockedStatus;
-    this.setState({ isLocked });
-    if (this.state.isLocked) {
-      console.log("Locked mode - CHILD MODE");
-    } else {
-      console.log("Unlocked mode - PARENT MODE");
-    }
-  }
-
   render() {
     const { classes } = this.props;
     let isLogin = this.state.isLogin;
-    let isFirstLogin = this.state.isFirstLogin;
     let isChatSetUp = this.state.isChatSetUp;
     let isLocked = this.state.isLocked;
     let currentChannelName =
       "Chating service is running ! Your are currently in " +
       this.state.currentChannelName;
-    if (!this.state.currentChannelName) {
-      currentChannelName = "Chating service is running !";
+    if(!this.state.currentChannelName){
+      currentChannelName ="Chating service is running !";
     }
     const drawer = (
       <Drawer
@@ -229,8 +213,7 @@ class HomePage extends React.Component {
               />
               <Divider />
               <ChannelManager
-                isLocked={isLocked}
-                changeChannel={this.changeChannel}
+                isLocked={isLocked} changeChannel ={this.changeChannel}
               />
               <Divider />
             </div>
@@ -284,11 +267,9 @@ class HomePage extends React.Component {
                         <Typography type="title" color="default" noWrap>
                           {currentChannelName}
                         </Typography>
-                        <Chatwindow
-                          currentChannel={this.state.currentChannel}
-                          currentUser={this.state.currentUserEmail}
-                        />
+                        <Chatwindow currentChannel = {this.state.currentChannel} currentUser= {this.state.currentUserEmail}/>
                       </div>
+                      
                     ) : (
                       <Typography type="title" color="default" noWrap>
                         Chat service disconnected -.-

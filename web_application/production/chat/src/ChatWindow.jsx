@@ -41,6 +41,7 @@ class ChatWindow extends React.Component {
     this.submitHandler = this.submitHandler.bind(this);
     this.textChangeHandler = this.textChangeHandler.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
+    //TODO:
     this.handleEnterInput = this.handleEnterInput.bind(this);
   }
 
@@ -74,10 +75,14 @@ class ChatWindow extends React.Component {
     const setState = this.setState.bind(this);
     let scrollToBottom = this.scrollToBottom.bind(this);
     currentChannel.getMessages().then(function(messages) {
+      console.log("didMount");
+      console.log(messages.items);
       setState({ historyMessages: messages.items });
       scrollToBottom();
     });
     currentChannel.on("messageAdded", function(message) {
+      console.log("didMount");
+      console.log(message);
       newMessages = newMessages.concat(message);
       setState({ newMessages: newMessages });
       scrollToBottom();
