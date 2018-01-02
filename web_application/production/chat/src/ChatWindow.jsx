@@ -56,7 +56,6 @@ class ChatWindow extends React.Component {
 
       let scrollToBottom = this.scrollToBottom.bind(this); //Auto scrollToBottom *******
       newChannel.getMessages().then(function(messages) {
-
         setState({ newMessages:[]});  //Clear History input *******
         setState({ historyMessages: messages.items });
         scrollToBottom();
