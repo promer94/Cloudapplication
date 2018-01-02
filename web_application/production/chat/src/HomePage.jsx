@@ -7,7 +7,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-
 //Material UI components
 import { withStyles } from "material-ui/styles";
 import Drawer from "material-ui/Drawer";
@@ -17,20 +16,18 @@ import Typography from "material-ui/Typography";
 import Divider from "material-ui/Divider";
 import Button from "material-ui/Button";
 
-
-
 //Original component
 import ChannelManager from "./ChannelManager";
 import Chatwindow from "./ChatWindow";
 import Clock from "./Clock";
 import PersonInfoAvatars from "./PersonInfoAvatars";
-
+import LockButton from "./LockButton";
+import PinWindow from "./PinWindow";
 
 //Twilio IP-Massages library
 import Chat from "twilio-chat";
 
-
-//AJAX library 
+//AJAX library
 const axios = require("axios");
 
 const drawerWidth = 240;
@@ -94,7 +91,7 @@ class HomePage extends React.Component {
       currentUserEmail: "",
       currentUserPicture: "",
       currentChatClient: "",
-      currentChannel:"",
+      currentChannel: "",
       twilioIdentity: "",
       twilioToken: "",
       contectList: []
@@ -102,6 +99,8 @@ class HomePage extends React.Component {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.changeChannel = this.changeChannel.bind(this);
+    this.changeIsFirstLogin = this.changeIsFirstLogin.bind(this);
+    this.changeIsLocked = this.changeIsLocked.bind(this);
   }
 
   componentDidMount() {
@@ -165,16 +164,34 @@ class HomePage extends React.Component {
     this.setState({ isChatSetUp: true });
   }
 
+  //Show chat page after first time log in
+  changeIsFirstLogin() {
+    let isFirstLogin = false;
+    this.setState({ isFirstLogin });
+  }
+
+  //Lock or unlock the session
+  changeIsLocked(lockedStatus) {
+    let isLocked = lockedStatus;
+    this.setState({ isLocked });
+    if (this.state.isLocked) {
+      console.log("Locked mode - CHILD MODE");
+    } else {
+      console.log("Unlocked mode - PARENT MODE");
+    }
+  }
+
   render() {
     const { classes } = this.props;
     let isLogin = this.state.isLogin;
+    let isFirstLogin = this.state.isFirstLogin;
     let isChatSetUp = this.state.isChatSetUp;
     let isLocked = this.state.isLocked;
     let currentChannelName =
       "Chating service is running ! Your are currently in " +
       this.state.currentChannelName;
-    if(!this.state.currentChannelName){
-      currentChannelName ="Chating service is running !";
+    if (!this.state.currentChannelName) {
+      currentChannelName = "Chating service is running !";
     }
     const drawer = (
       <Drawer
@@ -189,11 +206,14 @@ class HomePage extends React.Component {
           children={
             <div className={classes.row} id="person info display after login">
               {isLogin ? (
-                <PersonInfoAvatars
-                  name={this.state.currentUserName}
-                  email={this.state.currentUserEmail}
-                  picture={this.state.currentUserPicture}
-                />
+                <div>
+                  <PersonInfoAvatars
+                    name={this.state.currentUserName}
+                    email={this.state.currentUserEmail}
+                    picture={this.state.currentUserPicture}
+                  />
+                  <LockButton changeStatus={this.changeIsLocked} />
+                </div>
               ) : (
                 <img src={logo} className="App-logo" alt="logo" />
               )}
@@ -212,9 +232,15 @@ class HomePage extends React.Component {
                 noWrap
               />
               <Divider />
-              <ChannelManager
-                isLocked={isLocked} changeChannel ={this.changeChannel}
-              />
+              {isLocked ? (
+                <ChannelManager
+                  isLocked={isLocked}
+                  changeChannel={this.changeChannel}
+                />
+              ) : (
+                <div />
+              )}
+
               <Divider />
             </div>
           ) : (
@@ -257,30 +283,40 @@ class HomePage extends React.Component {
                 </Toolbar>
               )}
             </AppBar>
-            {drawer}
-            <main className={classNames(classes.content, "background")}>
-              <div id="chat window">
-                {isLogin ? (
-                  <div id="display window">
-                    {isChatSetUp ? (
-                      <div id="twilio service running ">
-                        <Typography type="title" color="default" noWrap>
-                          {currentChannelName}
-                        </Typography>
-                        <Chatwindow currentChannel = {this.state.currentChannel} currentUser= {this.state.currentUserEmail}/>
+            {isFirstLogin ? (
+              <div className={classNames("background")}>
+                <PinWindow changeLoginStatus={this.changeIsFirstLogin} />
+              </div>
+            ) : (
+              <div>
+                {drawer}
+                <main className={classNames(classes.content, "background")}>
+                  <div id="chat window">
+                    {isLogin ? (
+                      <div id="display window">
+                        {isChatSetUp ? (
+                          <div id="twilio service running ">
+                            <Typography type="title" color="default" noWrap>
+                              {currentChannelName}
+                            </Typography>
+                            <Chatwindow
+                              currentChannel={this.state.currentChannel}
+                              currentUser={this.state.currentUserEmail}
+                            />
+                          </div>
+                        ) : (
+                          <Typography type="title" color="default" noWrap>
+                            Chat service disconnected -.-
+                          </Typography>
+                        )}
                       </div>
-                      
                     ) : (
-                      <Typography type="title" color="default" noWrap>
-                        Chat service disconnected -.-
-                      </Typography>
+                      <div id="no login no window" />
                     )}
                   </div>
-                ) : (
-                  <div id="no login no window" />
-                )}
+                </main>
               </div>
-            </main>
+            )}
           </div>
         </div>
         <footer>
