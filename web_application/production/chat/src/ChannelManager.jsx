@@ -54,8 +54,8 @@ const styles = theme => ({
   },
   close: {
     width: theme.spacing.unit * 10,
-    height: theme.spacing.unit * 10,
-  },
+    height: theme.spacing.unit * 10
+  }
 });
 class ChannelManager extends React.Component {
   constructor(props) {
@@ -67,10 +67,10 @@ class ChannelManager extends React.Component {
       isContectListReady: false,
       isInvitationListReady: false,
       isChannelReady: false,
-      invitationSnackBarOpen:false,
-      snackInvitationmessage:"",
-      invitateSnackBarOpen:false,
-      snakeInvitatemessage:"",
+      invitationSnackBarOpen: false,
+      snackInvitationmessage: "",
+      invitateSnackBarOpen: false,
+      snakeInvitatemessage: "",
       error: null,
       chatClient: "",
       newChannlename: "",
@@ -101,14 +101,13 @@ class ChannelManager extends React.Component {
             updateContectList();
           });
           chatClient.on("channelRemoved", function(channel) {
-
             setState({ isContectListReady: false });
             updateContectList();
           });
           chatClient.on("channelInvited", function(channel) {
             let message = "Invited to channel " + channel.friendlyName;
-            setState({snackInvitationmessage:message});
-            setState({invitationSnackBarOpen:true});
+            setState({ snackInvitationmessage: message });
+            setState({ invitationSnackBarOpen: true });
           });
         }
       })
@@ -155,9 +154,7 @@ class ChannelManager extends React.Component {
   handleChannelDelete = data => () => {
     const contectList = [...this.state.contectList];
     const contectToDelete = contectList.indexOf(data);
-    contectList[contectToDelete].delete().then(function(channel) {
-      console.log("Deleted channel: " + channel.uniqueName);
-    });
+    contectList[contectToDelete].delete().then(function(channel) {});
     //contectList.splice(contectToDelete, 1);
     //this.setState({ contectList });
   };
@@ -168,13 +165,10 @@ class ChannelManager extends React.Component {
     const contectList = [...this.state.contectList];
     const channelToJoin = contectList.indexOf(data);
     changeChannel(contectList[channelToJoin]);
-    contectList[channelToJoin].join().catch(function(err) {
-      console.error(err);
-    });
+    contectList[channelToJoin].join().catch(function(err) {});
 
     this.setState({ currentChannel: contectList[channelToJoin] });
     this.setState({ isChannelReady: true });
-    console.log("joined channel: " + contectList[channelToJoin].uniqueName);
   };
 
   //TODO:
@@ -213,7 +207,7 @@ class ChannelManager extends React.Component {
     try {
       chatClient
         .createChannel({
-          uniqueName: "Private channel with " + this.state.newChannlename,
+          uniqueName: "Private channel called" + this.state.newChannlename,
           friendlyName: this.state.newChannlename,
           isPrivate: true
         })
@@ -245,16 +239,17 @@ class ChannelManager extends React.Component {
     const currentChannel = this.state.currentChannel;
     const setState = this.setState.bind(this);
     currentChannel.invite(this.state.emailAdress).then(function() {
-      let message = "Your friend has been invited to " + currentChannel.friendlyName;
-      setState({snakeInvitatemessage:message});
-      setState({invitateSnackBarOpen:true});
+      let message =
+        "Your friend has been invited to " + currentChannel.friendlyName;
+      setState({ snakeInvitatemessage: message });
+      setState({ invitateSnackBarOpen: true });
     });
     this.setState({ emailAdress: "" });
     e.preventDefault();
   }
 
   handleInvitationSnack = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -262,7 +257,7 @@ class ChannelManager extends React.Component {
   };
 
   handleInviteSnack = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -309,7 +304,7 @@ class ChannelManager extends React.Component {
                             <FaceIcon className={classes.svgIcon} />
                           </Avatar>
                         }
-                        label={data.uniqueName}
+                        label={data.friendlyName}
                         key={data.sid}
                         onDelete={this.handleChannelDelete(data)}
                         onClick={this.handleChannelSwitch(data)}
@@ -352,26 +347,26 @@ class ChannelManager extends React.Component {
                   noWrap
                 />
                 <Snackbar
-                          anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "left"
-                          }}
-                          open={this.state.invitationSnackBarOpen}
-                          autoHideDuration={3000}
-                          onClose={this.handleInvitationSnack}
-                          message={this.state.snackInvitationmessage}
-                          action={[
-                            <IconButton
-                              key="close"
-                              aria-label="Close"
-                              color="inherit"
-                              className={classes.close}
-                              onClick={this.handleInvitationSnack}
-                            >
-                              <CloseIcon />
-                            </IconButton>
-                          ]}
-                        />
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left"
+                  }}
+                  open={this.state.invitationSnackBarOpen}
+                  autoHideDuration={3000}
+                  onClose={this.handleInvitationSnack}
+                  message={this.state.snackInvitationmessage}
+                  action={[
+                    <IconButton
+                      key="close"
+                      aria-label="Close"
+                      color="inherit"
+                      className={classes.close}
+                      onClick={this.handleInvitationSnack}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  ]}
+                />
                 <List>
                   <div id="contects" className={classes.row}>
                     {contectList.map(data => {
@@ -382,7 +377,7 @@ class ChannelManager extends React.Component {
                               <FaceIcon className={classes.svgIcon} />
                             </Avatar>
                           }
-                          label={data.uniqueName}
+                          label={data.friendlyName}
                           key={data.sid}
                           onDelete={this.handleChannelDelete(data)}
                           onClick={this.handleChannelSwitch(data)}
@@ -440,7 +435,7 @@ class ChannelManager extends React.Component {
                           id="AddFriend"
                           onChange={this.handleInvitaionChange}
                           placeholder="Enter your friends email"
-                          value = {this.state.emailAdress}
+                          value={this.state.emailAdress}
                         />
                         <Button
                           fab

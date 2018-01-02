@@ -1,41 +1,30 @@
-//State and Life Cycle
+import React from "react";
 import Typography from "material-ui/Typography";
-import React from 'react';
-import { withStyles } from "material-ui/styles";
-const styles = theme => ({
-    chip: {
-      alingn: "center",
-      color:"primary",
-      type:"headline"
-    },
-    
-  });
-class Clock extends React.Component{
-    constructor(){
-        super()
-        this.state = {date: new Date()};
-    }
 
-    componentDidMount(){
-        this.timerID = setInterval(
-            ()=>this.tick(),1000);
-    }
+class Clock extends React.Component {
+  constructor() {
+    super();
+    this.state = { date: new Date() };
+  }
 
-    componentWillUnmount(){
-        clearInterval(this.timerID);
-    }
+  componentDidMount() {
+    this.timerID = setInterval(() => this.tick(), 1000);
+  }
 
-    tick(){
-        this.setState({date: new Date()})
-    }
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
 
-    render(){
+  tick() {
+    this.setState({ date: new Date() });
+  }
 
-        return(
-              <Typography align="center" color = 'inherit' type ='title'>
-                    {this.state.date.toLocaleString()}
-            </Typography>   
-        )
-    }
-};
-export default withStyles(styles)(Clock)
+  render() {
+    return (
+      <Typography align="center" color="inherit" type="title">
+        {this.state.date.toLocaleString()}
+      </Typography>
+    );
+  }
+}
+export default Clock;

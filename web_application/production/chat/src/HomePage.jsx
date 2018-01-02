@@ -21,8 +21,11 @@ import ChannelManager from "./ChannelManager";
 import Chatwindow from "./ChatWindow";
 import Clock from "./Clock";
 import PersonInfoAvatars from "./PersonInfoAvatars";
+<<<<<<< HEAD
 import LockButton from "./LockButton";
 import PinWindow from "./PinWindow";
+=======
+>>>>>>> f66b5f305aecf0165f2f190fc83b9bff0dc517f7
 
 //Twilio IP-Massages library
 import Chat from "twilio-chat";
@@ -30,7 +33,7 @@ import Chat from "twilio-chat";
 //AJAX library
 const axios = require("axios");
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const styles = theme => ({
   root: {
@@ -48,7 +51,7 @@ const styles = theme => ({
   appBar: {
     position: "absolute",
     width: `calc(100% - ${drawerWidth}px)`,
-    backgroundColor: "#ECEFF1"
+    backgroundColor: "#F5F5DC"
   },
   button: {
     position: "relative",
@@ -59,7 +62,7 @@ const styles = theme => ({
     position: "relative",
     height: "100%",
     width: drawerWidth,
-    backgroundColor: "#ECEFF1"
+    backgroundColor: "#F5F5DC"
   },
   drawerHeader: theme.mixins.toolbar,
   content: {
@@ -109,7 +112,6 @@ class HomePage extends React.Component {
       .get("/userinfo")
       .then(response => {
         if (!response.data.user_status) {
-          console.log(response);
         } else {
           let currentUserName = response.data.user_name;
           let currentUserEmail = response.data.user_email;
@@ -153,7 +155,7 @@ class HomePage extends React.Component {
 
   logout() {
     //Tell backend to clear all the session.
-    window.location.href = "http://127.0.0.1:5000/logout";
+    window.location.href = "https://127.0.0.1:5000/logout";
     this.setState({ isChatSetUp: false });
   }
 
@@ -232,6 +234,7 @@ class HomePage extends React.Component {
                 noWrap
               />
               <Divider />
+<<<<<<< HEAD
               {isLocked ? (
                 <ChannelManager
                   isLocked={isLocked}
@@ -241,6 +244,12 @@ class HomePage extends React.Component {
                 <div />
               )}
 
+=======
+              <ChannelManager
+                isLocked={isLocked}
+                changeChannel={this.changeChannel}
+              />
+>>>>>>> f66b5f305aecf0165f2f190fc83b9bff0dc517f7
               <Divider />
             </div>
           ) : (
@@ -283,6 +292,7 @@ class HomePage extends React.Component {
                 </Toolbar>
               )}
             </AppBar>
+<<<<<<< HEAD
             {isFirstLogin ? (
               <div className={classNames("background")}>
                 <PinWindow changeLoginStatus={this.changeIsFirstLogin} />
@@ -309,6 +319,22 @@ class HomePage extends React.Component {
                             Chat service disconnected -.-
                           </Typography>
                         )}
+=======
+            {drawer}
+            <main className={classNames(classes.content, "background")}>
+              <div id="chat window">
+                {isLogin ? (
+                  <div id="display window">
+                    {isChatSetUp ? (
+                      <div id="twilio service running ">
+                        <Typography type="title" color="default" noWrap>
+                          {currentChannelName}
+                        </Typography>
+                        <Chatwindow
+                          currentChannel={this.state.currentChannel}
+                          currentUser={this.state.currentUserEmail}
+                        />
+>>>>>>> f66b5f305aecf0165f2f190fc83b9bff0dc517f7
                       </div>
                     ) : (
                       <div id="no login no window" />
