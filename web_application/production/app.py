@@ -14,7 +14,7 @@ from twilio.jwt.access_token.grants import (
 from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname
 from inflection import underscore
-
+from flask_cors import CORS
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -45,7 +45,9 @@ TWILIO_SYNC_SERVICE_SID = os.environ['TWILIO_SYNC_SERVICE_SID'],
 
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = SECRET_KEY
+
 oauth = OAuth()
 
 google = oauth.remote_app('google',
