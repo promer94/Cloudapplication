@@ -7,7 +7,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-
 //Material UI components
 import { withStyles } from "material-ui/styles";
 import Drawer from "material-ui/Drawer";
@@ -17,20 +16,16 @@ import Typography from "material-ui/Typography";
 import Divider from "material-ui/Divider";
 import Button from "material-ui/Button";
 
-
-
 //Original component
 import ChannelManager from "./ChannelManager";
 import Chatwindow from "./ChatWindow";
 import Clock from "./Clock";
 import PersonInfoAvatars from "./PersonInfoAvatars";
 
-
 //Twilio IP-Massages library
 import Chat from "twilio-chat";
 
-
-//AJAX library 
+//AJAX library
 const axios = require("axios");
 
 const drawerWidth = 280;
@@ -94,7 +89,7 @@ class HomePage extends React.Component {
       currentUserEmail: "",
       currentUserPicture: "",
       currentChatClient: "",
-      currentChannel:"",
+      currentChannel: "",
       twilioIdentity: "",
       twilioToken: "",
       contectList: []
@@ -110,7 +105,6 @@ class HomePage extends React.Component {
       .get("/userinfo")
       .then(response => {
         if (!response.data.user_status) {
-          
         } else {
           let currentUserName = response.data.user_name;
           let currentUserEmail = response.data.user_email;
@@ -173,8 +167,8 @@ class HomePage extends React.Component {
     let currentChannelName =
       "Chating service is running ! Your are currently in " +
       this.state.currentChannelName;
-    if(!this.state.currentChannelName){
-      currentChannelName ="Chating service is running !";
+    if (!this.state.currentChannelName) {
+      currentChannelName = "Chating service is running !";
     }
     const drawer = (
       <Drawer
@@ -213,7 +207,8 @@ class HomePage extends React.Component {
               />
               <Divider />
               <ChannelManager
-                isLocked={isLocked} changeChannel ={this.changeChannel}
+                isLocked={isLocked}
+                changeChannel={this.changeChannel}
               />
               <Divider />
             </div>
@@ -267,9 +262,11 @@ class HomePage extends React.Component {
                         <Typography type="title" color="default" noWrap>
                           {currentChannelName}
                         </Typography>
-                        <Chatwindow currentChannel = {this.state.currentChannel} currentUser= {this.state.currentUserEmail}/>
+                        <Chatwindow
+                          currentChannel={this.state.currentChannel}
+                          currentUser={this.state.currentUserEmail}
+                        />
                       </div>
-                      
                     ) : (
                       <Typography type="title" color="default" noWrap>
                         Chat service disconnected -.-
