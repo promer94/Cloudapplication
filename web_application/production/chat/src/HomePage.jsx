@@ -21,11 +21,8 @@ import ChannelManager from "./ChannelManager";
 import Chatwindow from "./ChatWindow";
 import Clock from "./Clock";
 import PersonInfoAvatars from "./PersonInfoAvatars";
-<<<<<<< HEAD
 import LockButton from "./LockButton";
 import PinWindow from "./PinWindow";
-=======
->>>>>>> f66b5f305aecf0165f2f190fc83b9bff0dc517f7
 
 //Twilio IP-Massages library
 import Chat from "twilio-chat";
@@ -208,14 +205,11 @@ class HomePage extends React.Component {
           children={
             <div className={classes.row} id="person info display after login">
               {isLogin ? (
-                <div>
-                  <PersonInfoAvatars
-                    name={this.state.currentUserName}
-                    email={this.state.currentUserEmail}
-                    picture={this.state.currentUserPicture}
-                  />
-                  <LockButton changeStatus={this.changeIsLocked} />
-                </div>
+                <PersonInfoAvatars
+                  name={this.state.currentUserName}
+                  email={this.state.currentUserEmail}
+                  picture={this.state.currentUserPicture}
+                />
               ) : (
                 <img src={logo} className="App-logo" alt="logo" />
               )}
@@ -234,22 +228,10 @@ class HomePage extends React.Component {
                 noWrap
               />
               <Divider />
-<<<<<<< HEAD
-              {isLocked ? (
-                <ChannelManager
-                  isLocked={isLocked}
-                  changeChannel={this.changeChannel}
-                />
-              ) : (
-                <div />
-              )}
-
-=======
               <ChannelManager
                 isLocked={isLocked}
                 changeChannel={this.changeChannel}
               />
->>>>>>> f66b5f305aecf0165f2f190fc83b9bff0dc517f7
               <Divider />
             </div>
           ) : (
@@ -292,34 +274,6 @@ class HomePage extends React.Component {
                 </Toolbar>
               )}
             </AppBar>
-<<<<<<< HEAD
-            {isFirstLogin ? (
-              <div className={classNames("background")}>
-                <PinWindow changeLoginStatus={this.changeIsFirstLogin} />
-              </div>
-            ) : (
-              <div>
-                {drawer}
-                <main className={classNames(classes.content, "background")}>
-                  <div id="chat window">
-                    {isLogin ? (
-                      <div id="display window">
-                        {isChatSetUp ? (
-                          <div id="twilio service running ">
-                            <Typography type="title" color="default" noWrap>
-                              {currentChannelName}
-                            </Typography>
-                            <Chatwindow
-                              currentChannel={this.state.currentChannel}
-                              currentUser={this.state.currentUserEmail}
-                            />
-                          </div>
-                        ) : (
-                          <Typography type="title" color="default" noWrap>
-                            Chat service disconnected -.-
-                          </Typography>
-                        )}
-=======
             {drawer}
             <main className={classNames(classes.content, "background")}>
               <div id="chat window">
@@ -334,15 +288,18 @@ class HomePage extends React.Component {
                           currentChannel={this.state.currentChannel}
                           currentUser={this.state.currentUserEmail}
                         />
->>>>>>> f66b5f305aecf0165f2f190fc83b9bff0dc517f7
                       </div>
                     ) : (
-                      <div id="no login no window" />
+                      <Typography type="title" color="default" noWrap>
+                        Chat service disconnected -.-
+                      </Typography>
                     )}
                   </div>
-                </main>
+                ) : (
+                  <div id="no login no window" />
+                )}
               </div>
-            )}
+            </main>
           </div>
         </div>
         <footer>

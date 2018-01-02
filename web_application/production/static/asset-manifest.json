@@ -1,5 +1,6 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "bundle/media/ic_lock.svg": "bundle/media/ic_lock.bc402522.svg",
   "bundle/media/ic_unlock.svg": "bundle/media/ic_unlock.b9f4ab58.svg",
   "bundle/media/logo.svg": "bundle/media/logo.78eeaaea.svg",
@@ -32,6 +33,8 @@
   "main.js": "bundle/js/main.c12c129f.js",
   "main.js.map": "bundle/js/main.c12c129f.js.map"
 =======
+=======
+>>>>>>> parent of 41e3fb9... added PinWindow and LockButton
   "bundle\\media\\logo.svg": "bundle/media/logo.b191dab1.svg",
   "bundle\\media\\roboto-latin-100.woff": "bundle/media/roboto-latin-100.e9dbbe8a.woff",
   "bundle\\media\\roboto-latin-100.woff2": "bundle/media/roboto-latin-100.987b8457.woff2",
@@ -59,7 +62,12 @@
   "bundle\\media\\roboto-latin-900italic.woff2": "bundle/media/roboto-latin-900italic.7b770d6c.woff2",
   "main.css": "bundle/css/main.167ae5c6.css",
   "main.css.map": "bundle/css/main.167ae5c6.css.map",
+<<<<<<< HEAD
   "main.js": "bundle/js/main.c96168ba.js",
   "main.js.map": "bundle/js/main.c96168ba.js.map"
 >>>>>>> f66b5f305aecf0165f2f190fc83b9bff0dc517f7
+=======
+  "main.js": "bundle/js/main.ab437813.js",
+  "main.js.map": "bundle/js/main.ab437813.js.map"
+>>>>>>> parent of 41e3fb9... added PinWindow and LockButton
 }
