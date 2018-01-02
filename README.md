@@ -23,8 +23,8 @@ You need install all the frontend dependencies for React and Material UI.
 ```bash
 npm installl
 ```
-after that you start development by edit the files in the */src*  
-When you finish you changes. you should build a static.
+after that you can start development by edit the files in the */src*  
+When you finish you changes. you should build a new static file.
 ```bash
 npm run build
 ```
@@ -34,4 +34,8 @@ At last, in production directory, you can run
 ```bash
 python app.py
 ```
-to see your new application
+to see your new application.  
+
+---
+## Tips
+* Sometime you will find you application doesn't change after you edited your code. That is beacause the browser store your previous Javascript file. You might found in python console it doesn't have a new GET http request for new javascript file. You need to clean the history file or you may just download a new browser and change setting to make sure it will not stroe any file.
