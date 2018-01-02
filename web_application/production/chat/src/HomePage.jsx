@@ -33,7 +33,7 @@ import Chat from "twilio-chat";
 //AJAX library 
 const axios = require("axios");
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const styles = theme => ({
   root: {
@@ -51,7 +51,7 @@ const styles = theme => ({
   appBar: {
     position: "absolute",
     width: `calc(100% - ${drawerWidth}px)`,
-    backgroundColor: "#ECEFF1"
+    backgroundColor: "#F5F5DC"
   },
   button: {
     position: "relative",
@@ -62,7 +62,7 @@ const styles = theme => ({
     position: "relative",
     height: "100%",
     width: drawerWidth,
-    backgroundColor: "#ECEFF1"
+    backgroundColor: "#F5F5DC"
   },
   drawerHeader: theme.mixins.toolbar,
   content: {
@@ -110,7 +110,7 @@ class HomePage extends React.Component {
       .get("/userinfo")
       .then(response => {
         if (!response.data.user_status) {
-          console.log(response);
+          
         } else {
           let currentUserName = response.data.user_name;
           let currentUserEmail = response.data.user_email;
@@ -154,7 +154,7 @@ class HomePage extends React.Component {
 
   logout() {
     //Tell backend to clear all the session.
-    window.location.href = "http://127.0.0.1:5000/logout";
+    window.location.href = "https://127.0.0.1:5000/logout";
     this.setState({ isChatSetUp: false });
   }
 
