@@ -9,8 +9,6 @@ import Send from "material-ui-icons/Send";
 import Typography from "material-ui/Typography";
 import { withStyles } from "material-ui/styles";
 
-
-
 //Npm react-custom-scrollbars component
 import { Scrollbars } from "react-custom-scrollbars";
 
@@ -30,7 +28,7 @@ const styles = theme => ({
     paddingBottom: 16,
     marginTop: theme.spacing.unit * 3,
     width: 120
-  }),
+  })
 });
 
 class ChatWindow extends React.Component {
@@ -39,9 +37,7 @@ class ChatWindow extends React.Component {
     this.state = {
       historyMessages: [],
       newMessages: [],
-      inputmassage: "",
-      currentChannel: "",
-      snakebaropen:false
+      inputmassage: ""
     };
     this.submitHandler = this.submitHandler.bind(this);
     this.textChangeHandler = this.textChangeHandler.bind(this);
@@ -53,22 +49,20 @@ class ChatWindow extends React.Component {
       //Remove previous listener
       const currentChannel = this.props.currentChannel;
       currentChannel.removeAllListeners();
-      console.log(currentChannel.friendlyName + " listener romoved");
-
       //Get history of another channel and set up a new listener.
       let newMessages = [];
       const newChannel = nextProps.currentChannel;
       const setState = this.setState.bind(this);
-      let scrollToBottom = this.scrollToBottom.bind(this);
+
+      let scrollToBottom = this.scrollToBottom.bind(this); //Auto scrollToBottom *******
       newChannel.getMessages().then(function(messages) {
-        console.log(messages.items);
-        setState({ historyMessages: [] });
+
+        setState({ newMessages:[]});  //Clear History input *******
         setState({ historyMessages: messages.items });
         scrollToBottom();
       });
       newChannel.on("messageAdded", function(message) {
-        console.log(currentChannel.friendlyName + " listener added");
-        setState({ newMessages: [] });
+
         newMessages = newMessages.concat(message);
         setState({ newMessages: newMessages });
         scrollToBottom();
@@ -78,15 +72,18 @@ class ChatWindow extends React.Component {
 
   componentDidMount() {
     const currentChannel = this.props.currentChannel;
-    let newMessages = this.state.newMessages;
+    let newMessages = [];
     const setState = this.setState.bind(this);
     let scrollToBottom = this.scrollToBottom.bind(this);
     currentChannel.getMessages().then(function(messages) {
+        console.log('didMount');
+        console.log(messages.items)
       setState({ historyMessages: messages.items });
       scrollToBottom();
     });
-    console.log(currentChannel.friendlyName + " listener added");
     currentChannel.on("messageAdded", function(message) {
+      console.log('didMount');
+      console.log(message)
       newMessages = newMessages.concat(message);
       setState({ newMessages: newMessages });
       scrollToBottom();
@@ -220,9 +217,11 @@ class ChatWindow extends React.Component {
         </div>
       );
     } else {
-      return (<Typography align="right" color="Error" type="caption">
-      Select or create a channle to start;
-    </Typography>)
+      return (
+        <Typography align="right" color="Error" type="caption">
+          Select or create a channle to start;
+        </Typography>
+      );
     }
   }
 }
