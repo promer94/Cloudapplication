@@ -68,6 +68,7 @@ class ChatWindow extends React.Component {
       });
       newChannel.on("messageAdded", function(message) {
         console.log(currentChannel.friendlyName + " listener added");
+        setState({ newMessages: [] });
         newMessages = newMessages.concat(message);
         setState({ newMessages: newMessages });
         scrollToBottom();
