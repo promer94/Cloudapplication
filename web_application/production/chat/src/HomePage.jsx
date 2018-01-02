@@ -1,25 +1,36 @@
 import "./HomePage.css";
 import "./BackgroudImage.css";
 import logo from "./logo.svg";
+
+//React config
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+
+
+//Material UI components
 import { withStyles } from "material-ui/styles";
 import Drawer from "material-ui/Drawer";
 import AppBar from "material-ui/AppBar";
 import Toolbar from "material-ui/Toolbar";
-import List from "material-ui/List";
 import Typography from "material-ui/Typography";
 import Divider from "material-ui/Divider";
 import Button from "material-ui/Button";
-import PersonInfoAvatars from "./PersonInfoAvatars";
-//import ChannelCreator from "./ChannelCreator";
-import Chatwindow from "./ChatWindow";
-//import ContectList from "./ContectList";
-import Chat from "twilio-chat";
+
+
+
+//Original component
 import ChannelManager from "./ChannelManager";
+import Chatwindow from "./ChatWindow";
+import Clock from "./Clock";
+import PersonInfoAvatars from "./PersonInfoAvatars";
 
 
+//Twilio IP-Massages library
+import Chat from "twilio-chat";
+
+
+//AJAX library 
 const axios = require("axios");
 
 const drawerWidth = 240;
@@ -83,11 +94,10 @@ class HomePage extends React.Component {
       currentUserEmail: "",
       currentUserPicture: "",
       currentChatClient: "",
-      currentChannel: "",
-      currentChannelName: "",
+      currentChannel:"",
       twilioIdentity: "",
       twilioToken: "",
-      contectList:[],
+      contectList: []
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -123,7 +133,6 @@ class HomePage extends React.Component {
       .get("/token")
       .then(response => {
         if (!response.data.token) {
-
         } else {
           let twilioIdentity = response.data.identity;
           let twilioToken = response.data.token;
@@ -131,7 +140,6 @@ class HomePage extends React.Component {
           this.setState({ twilioIdentity });
           this.setState({ twilioToken });
           this.setState({ currentChatClient: chatClient });
-          this.setState({ isChatSetUp: true });
         }
       })
       .catch(function(error) {
@@ -150,21 +158,24 @@ class HomePage extends React.Component {
     this.setState({ isChatSetUp: false });
   }
 
-  //This function will be passed to ChannelCreator and ContectList.
+  //This function will be passed to ChannelManager
   changeChannel(channel) {
     this.setState({ currentChannel: channel });
     this.setState({ currentChannelName: channel.friendlyName });
+    this.setState({ isChatSetUp: true });
   }
 
   render() {
     const { classes } = this.props;
-    const isLogin = this.state.isLogin;
-    const isChatSetUp = this.state.isChatSetUp;
-    const isFirstLogin = this.state.isFirstLogin;
-    const isLocked = this.state.isLocked;
-    const currentChannelName =
+    let isLogin = this.state.isLogin;
+    let isChatSetUp = this.state.isChatSetUp;
+    let isLocked = this.state.isLocked;
+    let currentChannelName =
       "Chating service is running ! Your are currently in " +
       this.state.currentChannelName;
+    if(!this.state.currentChannelName){
+      currentChannelName ="Chating service is running !";
+    }
     const drawer = (
       <Drawer
         type="permanent"
@@ -201,38 +212,13 @@ class HomePage extends React.Component {
                 noWrap
               />
               <Divider />
-              <ChannelManager changeChannel ={this.changeChannel}/>
+              <ChannelManager
+                isLocked={isLocked} changeChannel ={this.changeChannel}
+              />
+              <Divider />
             </div>
           ) : (
             <div id="loading list" />
-          )}
-        </div>
-
-        <Divider />
-        <div id="invitation container">
-          {isLocked ? (
-            //Invitation List
-            <div id="invitation hide for lock mode" />
-          ) : (
-            <div id="invitation list">
-              <Typography
-                type="title"
-                color="default"
-                children="Invitation List"
-                noWrap
-              />
-              <List />
-            </div>
-          )}
-        </div>
-        <Divider />
-        <div id="invitaion creator container">
-          {isLocked ? (
-            <div id="locked invitation creator" />
-          ) : (
-            <div id="invitation creator">
-              <h3>addfriendshere</h3>
-            </div>
           )}
         </div>
       </Drawer>
@@ -281,8 +267,9 @@ class HomePage extends React.Component {
                         <Typography type="title" color="default" noWrap>
                           {currentChannelName}
                         </Typography>
-                        <Chatwindow client={this.state.chatClient} />
+                        <Chatwindow currentChannel = {this.state.currentChannel} currentUser= {this.state.currentUserEmail}/>
                       </div>
+                      
                     ) : (
                       <Typography type="title" color="default" noWrap>
                         Chat service disconnected -.-
@@ -296,7 +283,9 @@ class HomePage extends React.Component {
             </main>
           </div>
         </div>
-        )
+        <footer>
+          <Clock />
+        </footer>
       </div>
     );
   }
