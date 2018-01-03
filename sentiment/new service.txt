@@ -1,0 +1,5 @@
+{
+  "url": "https://gateway.watsonplatform.net/natural-language-understanding/api",
+  "username": "45cb488c-c7e8-47ac-903d-b019d7c32d27",
+  "password": "15WtvFiutzzr"
+}
