@@ -13,7 +13,6 @@ class LockButton extends Component {
       isLocked: false
     };
     this.handleClick = this.handleClick.bind(this);
-    this.validatePin = this.validatePin.bind(this);
   }
 
   handleClick() {
@@ -22,33 +21,30 @@ class LockButton extends Component {
       this.setState({ isLocked });
       this.props.changeStatus(this.state.isLocked);
     } else {
-      if (this.validatePin()) {
-        this.setState({ isLocked });
-        this.props.changeStatus(this.state.isLocked);
-      }
-    }
-  }
-
-  validatePin() {
-    const inputPin = document.getElementById("PIN").value;
-    console.log("InputPin is " + inputPin);
-    axios
-      .get("/pin")
-      .then(response => {
-        if (!response.data.pin) {
-          console.log(response);
-        } else {
-          const correctPin = response.data.pin;
-          if (inputPin === correctPin) {
-            return true;
+      const inputPin = document.getElementById("PIN").value;
+      console.log("InputPin is " + inputPin);
+      // make a request to compare pins
+      axios
+        .post("/checkpin", {
+          pin: inputPin
+        })
+        .then(response => {
+          if (!response.data.valid) {
+            console.log(response);
+          } else {
+            const correctPin = response.data.valid;
+            console.log("POST RESPONSE IS " + correctPin);
+            if (correctPin) {
+              console.log('I"m inside if and want to return ' + correctPin);
+              this.setState({ isLocked });
+              this.props.changeStatus(this.state.isLocked);
+            }
           }
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-
-    return false;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
   }
 
   render() {

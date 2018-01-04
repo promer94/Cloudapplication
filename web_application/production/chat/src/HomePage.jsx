@@ -174,9 +174,9 @@ class HomePage extends React.Component {
     let isLocked = lockedStatus;
     this.setState({ isLocked });
     if (this.state.isLocked) {
-      console.log("Locked mode - CHILD MODE");
-    } else {
       console.log("Unlocked mode - PARENT MODE");
+    } else {
+      console.log("Locked mode - CHILD MODE");
     }
   }
 
