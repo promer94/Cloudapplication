@@ -50,7 +50,7 @@ def inputcheck(inputstring):
     return result
   if (num < 3):
     #print ('no enough input string')
-    return 0
+    return True
 
 
 #a = 'I hate apple'
