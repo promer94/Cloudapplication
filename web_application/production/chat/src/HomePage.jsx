@@ -171,12 +171,19 @@ class HomePage extends React.Component {
 
   //Lock or unlock the session
   changeIsLocked(lockedStatus) {
-    let isLocked = lockedStatus;
-    this.setState({ isLocked });
+    // let isLocked = lockedStatus;
+    this.setState({ isLocked: lockedStatus });
+    console.log("HomePage.state.isLocked " + this.state.isLocked);
     if (this.state.isLocked) {
-      console.log("Unlocked mode - PARENT MODE");
+      console.log(
+        "Unlocked mode - PARENT MODE - HomePage.state.isLocked = " +
+          this.state.isLocked
+      );
     } else {
-      console.log("Locked mode - CHILD MODE");
+      console.log(
+        "Locked mode - CHILD MODE - HomePage.state.isLocked = " +
+          this.state.isLocked
+      );
     }
   }
 
@@ -231,14 +238,10 @@ class HomePage extends React.Component {
                 noWrap
               />
               <Divider />
-              {isLocked ? (
-                <ChannelManager
-                  isLocked={isLocked}
-                  changeChannel={this.changeChannel}
-                />
-              ) : (
-                <div />
-              )}
+              <ChannelManager
+                isLocked={isLocked}
+                changeChannel={this.changeChannel}
+              />
               <Divider />
             </div>
           ) : (

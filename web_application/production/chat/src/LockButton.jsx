@@ -18,8 +18,10 @@ class LockButton extends Component {
   handleClick() {
     let isLocked = !this.state.isLocked;
     if (isLocked) {
-      this.setState({ isLocked });
-      this.props.changeStatus(this.state.isLocked);
+      console.log("I'm going to change state to " + isLocked);
+      this.setState({ isLocked }, () => {
+        this.props.changeStatus(this.state.isLocked);
+      });
     } else {
       const inputPin = document.getElementById("PIN").value;
       console.log("InputPin is " + inputPin);
@@ -36,8 +38,9 @@ class LockButton extends Component {
             console.log("POST RESPONSE IS " + correctPin);
             if (correctPin) {
               console.log('I"m inside if and want to return ' + correctPin);
-              this.setState({ isLocked });
-              this.props.changeStatus(this.state.isLocked);
+              this.setState({ isLocked }, () => {
+                this.props.changeStatus(this.state.isLocked);
+              });
             }
           }
         })
