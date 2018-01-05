@@ -191,6 +191,7 @@ class HomePage extends React.Component {
     const { classes } = this.props;
     let isLogin = this.state.isLogin;
     let isFirstLogin = this.state.isFirstLogin;
+    console.log("isFirstLogin is " + isFirstLogin);
     let isChatSetUp = this.state.isChatSetUp;
     let isLocked = this.state.isLocked;
     let currentChannelName =
@@ -289,35 +290,33 @@ class HomePage extends React.Component {
                 <PinWindow changeLoginStatus={this.changeIsFirstLogin} />
               </div>
             ) : (
-              <div>
-                {drawer}
-              </div>
+              <div>{drawer}</div>
             )}
             <main className={classNames(classes.content, "background")}>
-                  <div id="chat window">
-                    {isLogin ? (
-                      <div id="display window">
-                        {isChatSetUp ? (
-                          <div id="twilio service running ">
-                            <Typography type="title" color="default" noWrap>
-                              {currentChannelName}
-                            </Typography>
-                            <Chatwindow
-                              currentChannel={this.state.currentChannel}
-                              currentUser={this.state.currentUserEmail}
-                            />
-                          </div>
-                        ) : (
-                          <Typography type="title" color="default" noWrap>
-                            Chat service disconnected -.-
-                          </Typography>
-                        )}
+              <div id="chat window">
+                {isLogin ? (
+                  <div id="display window">
+                    {isChatSetUp ? (
+                      <div id="twilio service running ">
+                        <Typography type="title" color="default" noWrap>
+                          {currentChannelName}
+                        </Typography>
+                        <Chatwindow
+                          currentChannel={this.state.currentChannel}
+                          currentUser={this.state.currentUserEmail}
+                        />
                       </div>
                     ) : (
-                      <div id="no login no window" />
+                      <Typography type="title" color="default" noWrap>
+                        Chat service disconnected -.-
+                      </Typography>
                     )}
                   </div>
-                </main>
+                ) : (
+                  <div id="no login no window" />
+                )}
+              </div>
+            </main>
           </div>
         </div>
         <footer>
