@@ -1,6 +1,0 @@
-.vscode/
-lib
-env/
-.eslintrc.js
-.eslintrc.json
-./web_application/production/chat/node_modules/
