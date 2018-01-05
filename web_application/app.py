@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 from flask import Flask, jsonify, request, redirect, url_for, session
 from flask_oauth import OAuth
@@ -15,10 +16,59 @@ from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname
 from inflection import underscore
 from flask_cors import CORS
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2017-02-27',
+    username='02fb23e9-20d1-47da-bfa8-f380cb1a0bc9',
+    password='gk3oevbKk7gD')
+
+def GetLineStr(output):
+    alllines = output.split('\n')
+    lines=[]
+    for oneline in alllines:
+        lines.append(oneline)
+    return lines
+
+def sentiment_output(shuru):
+  response = natural_language_understanding.analyze(
+    text=shuru,
+      features=Features(
+    keywords=KeywordsOptions(
+      emotion=False,
+      sentiment=True,
+      limit=1)))
+  output = json.dumps(response,indent=2)
+  return output
+
+def judgement(inputstring):
+  orignalOutput = sentiment_output(inputstring)
+  processed1 = GetLineStr(orignalOutput)
+  checkmess = processed1[12]
+  print(checkmess)
+  if "negative" in checkmess:
+    return False
+  else:
+    return True
+
+def word_len(s):
+    return len([i for i in s.split(' ') if i])
+
+def inputcheck(inputstring):
+  num = word_len(inputstring)
+  print(inputstring)
+  if (num >= 3):
+    result = judgement(inputstring)
+    return result
+  if (num < 3):
+    print('Not enough words')
+    return True
 
 # Set up Google SignIn
 GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
@@ -135,6 +185,22 @@ def checkPin():
 			print('PINS ARE NOT EQUAL')
 			return jsonify(valid=False)
 
+# route to process messages
+@app.route('/sentiment', methods=['POST'])
+@is_logged_in
+def checkMessage():
+	print('CALLED route /sentiment')
+	content = request.get_json() or request.form
+	print(content['message'])
+	message = content['message']
+	# send message to IBM Watson
+	status = inputcheck(message)
+	print('STATUS IS ')
+	print(status)
+	if status == True:
+		return jsonify(status = True)
+	else:	
+		return jsonify(status = False)
 
 @app.route('/userinfo' , methods=['GET'])
 @is_logged_in
