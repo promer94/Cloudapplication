@@ -165,7 +165,10 @@ class ChannelManager extends React.Component {
     const contectList = [...this.state.contectList];
     const channelToJoin = contectList.indexOf(data);
     changeChannel(contectList[channelToJoin]);
-    contectList[channelToJoin].join().catch(function(err) {});
+    contectList[channelToJoin].join().catch(function(err) {
+      console.log("switch channel error catched");
+      console.log(err);
+    });
 
     this.setState({ currentChannel: contectList[channelToJoin] });
     this.setState({ isChannelReady: true });

@@ -11,3 +11,4 @@ inflection==0.3.1
 flask_oauth
 simplejson
 pymongo
+watson_developer_cloud==1.0.0

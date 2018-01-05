@@ -11,6 +11,8 @@ import TextField from "material-ui/TextField";
 //Npm react-custom-scrollbars component
 import { Scrollbars } from "react-custom-scrollbars";
 
+const axios = require("axios");
+
 const styles = theme => ({
   container: {
     display: "flex",
@@ -20,7 +22,8 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 500
+    width: "350px",
+    align: "center"
   },
   root: theme.mixins.gutters({
     paddingTop: 16,
@@ -43,12 +46,14 @@ class ChatWindow extends React.Component {
     this.scrollToBottom = this.scrollToBottom.bind(this);
     //TODO:
     this.handleEnterInput = this.handleEnterInput.bind(this);
+    this.deliverMessage = this.deliverMessage.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props) {
       //Remove previous listener
       const currentChannel = this.props.currentChannel;
+
       currentChannel.removeAllListeners();
       //Get history of another channel and set up a new listener.
       let newMessages = [];
@@ -102,20 +107,58 @@ class ChatWindow extends React.Component {
   submitHandler(event) {
     // Stop the form from refreshing the page on submit
     const channel = this.props.currentChannel;
-    channel.sendMessage(this.state.inputmassage);
-    this.setState({ inputmassage: "" });
-    this.scrollToBottom();
+    var risk = "";
+    // make a request
+    axios
+      .post("/sentiment", {
+        message: this.state.inputmassage
+      })
+      .then(response => {
+        if (response.data.status) {
+          console.log(response);
+        } else {
+          risk = " ******* ";
+        }
+        this.deliverMessage(risk, channel, event);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
     event.preventDefault();
   }
   //TODO:
   handleEnterInput(e) {
     const channel = this.props.currentChannel;
+    var risk = "";
     if (e.key === "Enter") {
-      channel.sendMessage(this.state.inputmassage);
-      this.setState({ inputmassage: "" });
-      this.scrollToBottom();
-      e.preventDefault();
+      // make a request
+      axios
+        .post("/sentiment", {
+          message: this.state.inputmassage
+        })
+        .then(response => {
+          if (response.data.status) {
+            console.log(response);
+          } else {
+            risk = " ******* ";
+          }
+          this.deliverMessage(risk, channel, e);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
+  }
+
+  deliverMessage(resp, channel, e) {
+    const testVar = resp + this.state.inputmassage + resp;
+    this.setState({ inputmassage: testVar });
+    console.log("INPUT MESSAGE: " + this.state.inputmassage);
+    channel.sendMessage(testVar);
+    console.log("TESTVAR " + testVar);
+    this.setState({ inputmassage: "" });
+    this.scrollToBottom();
+    e.preventDefault();
   }
 
   textChangeHandler(event) {
@@ -141,7 +184,12 @@ class ChatWindow extends React.Component {
                 if (data.author === currentUser) {
                   return (
                     <div>
-                      <Typography align="right" color="primary" type="display2">
+                      <Typography
+                        align="right"
+                        color="primary"
+                        type="display2"
+                        font-size="10"
+                      >
                         {data.body}
                       </Typography>
                       <Typography align="right" color="primary" type="caption">

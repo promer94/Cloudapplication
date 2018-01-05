@@ -48,7 +48,7 @@ const styles = theme => ({
   appBar: {
     position: "absolute",
     width: `calc(100% - ${drawerWidth}px)`,
-    backgroundColor: "#F5F5DC"
+    backgroundColor: "#eeeeee"
   },
   button: {
     position: "relative",
@@ -59,7 +59,7 @@ const styles = theme => ({
     position: "relative",
     height: "100%",
     width: drawerWidth,
-    backgroundColor: "#F5F5DC"
+    backgroundColor: "#eeeeee"
   },
   drawerHeader: theme.mixins.toolbar,
   content: {
@@ -85,7 +85,7 @@ class HomePage extends React.Component {
     this.state = {
       isLogin: false,
       isChatSetUp: false,
-      isFirstLogin: false,
+      isFirstLogin: true,
       isLocked: false,
       currentUserName: "",
       currentUserEmail: "",
@@ -165,8 +165,8 @@ class HomePage extends React.Component {
 
   //Show chat page after first time log in
   changeIsFirstLogin() {
-    let isFirstLogin = false;
-    this.setState({ isFirstLogin });
+    console.log("We're inside changeIsFirstLogin");
+    this.setState({ isFirstLogin: false });
   }
 
   //Lock or unlock the session
@@ -191,6 +191,7 @@ class HomePage extends React.Component {
     const { classes } = this.props;
     let isLogin = this.state.isLogin;
     let isFirstLogin = this.state.isFirstLogin;
+    console.log("isFirstLogin is " + isFirstLogin);
     let isChatSetUp = this.state.isChatSetUp;
     let isLocked = this.state.isLocked;
     let currentChannelName =
@@ -199,6 +200,7 @@ class HomePage extends React.Component {
     if (!this.state.currentChannelName) {
       currentChannelName = "Chating service is running !";
     }
+
     const drawer = (
       <Drawer
         type="permanent"
@@ -252,7 +254,7 @@ class HomePage extends React.Component {
     );
 
     return (
-      <div id="home page container">
+      <div id="home page container" className={classNames("background")}>
         <div id="root" className={classes.root}>
           <div id="appFrame" className={classes.appFrame}>
             <AppBar className={classNames(classes.appBar)}>
@@ -284,40 +286,38 @@ class HomePage extends React.Component {
                 </Toolbar>
               )}
             </AppBar>
-            {isFirstLogin ? (
+            {isFirstLogin & isLogin ? (
               <div className={classNames("background")}>
                 <PinWindow changeLoginStatus={this.changeIsFirstLogin} />
               </div>
             ) : (
-              <div>
-                {drawer}
-              </div>
+              <div>{drawer}</div>
             )}
             <main className={classNames(classes.content, "background")}>
-                  <div id="chat window">
-                    {isLogin ? (
-                      <div id="display window">
-                        {isChatSetUp ? (
-                          <div id="twilio service running ">
-                            <Typography type="title" color="default" noWrap>
-                              {currentChannelName}
-                            </Typography>
-                            <Chatwindow
-                              currentChannel={this.state.currentChannel}
-                              currentUser={this.state.currentUserEmail}
-                            />
-                          </div>
-                        ) : (
-                          <Typography type="title" color="default" noWrap>
-                            Chat service disconnected -.-
-                          </Typography>
-                        )}
+              <div id="chat window">
+                {isLogin ? (
+                  <div id="display window">
+                    {isChatSetUp ? (
+                      <div id="twilio service running ">
+                        <Typography type="title" color="default" noWrap>
+                          {currentChannelName}
+                        </Typography>
+                        <Chatwindow
+                          currentChannel={this.state.currentChannel}
+                          currentUser={this.state.currentUserEmail}
+                        />
                       </div>
                     ) : (
-                      <div id="no login no window" />
+                      <Typography type="title" color="default" noWrap>
+                        Chat service disconnected -.-
+                      </Typography>
                     )}
                   </div>
-                </main>
+                ) : (
+                  <div id="no login no window" />
+                )}
+              </div>
+            </main>
           </div>
         </div>
         <footer>
