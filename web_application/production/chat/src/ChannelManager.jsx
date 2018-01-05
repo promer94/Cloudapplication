@@ -94,6 +94,7 @@ class ChannelManager extends React.Component {
         if (!response.data.token) {
           console.log(response);
         } else {
+          console.log(response.data.token);
           let twilioToken = response.data.token;
           let chatClient = new Chat(twilioToken);
           chatClient.on("channelAdded", function(channel) {
@@ -119,9 +120,8 @@ class ChannelManager extends React.Component {
   //TODO: Remove listener
   componentWillUnmount() {
     let chatClient = this.state.chatClient;
-    chatClient.removeListener("channelAdded");
-    chatClient.removeListener("channelRemoved");
-    chatClient.removeListener("channelInvited");
+    console.log(chatClient);
+    chatClient.removeAllListeners();
   }
 
   //TODO: Load contect list from twilio list
@@ -154,9 +154,7 @@ class ChannelManager extends React.Component {
   handleChannelDelete = data => () => {
     const contectList = [...this.state.contectList];
     const contectToDelete = contectList.indexOf(data);
-    contectList[contectToDelete].delete().then(function(channel) {
-      
-    });
+    contectList[contectToDelete].delete().then(function(channel) {});
     //contectList.splice(contectToDelete, 1);
     //this.setState({ contectList });
   };
@@ -167,13 +165,10 @@ class ChannelManager extends React.Component {
     const contectList = [...this.state.contectList];
     const channelToJoin = contectList.indexOf(data);
     changeChannel(contectList[channelToJoin]);
-    contectList[channelToJoin].join().catch(function(err) {
-      
-    });
+    contectList[channelToJoin].join().catch(function(err) {});
 
     this.setState({ currentChannel: contectList[channelToJoin] });
     this.setState({ isChannelReady: true });
-    
   };
 
   //TODO:
@@ -274,10 +269,12 @@ class ChannelManager extends React.Component {
     const {
       error,
       isContectListReady,
+      //   isLocked,
       contectList,
-      isLocked,
       isChannelReady
     } = this.state;
+    // console.log("ChannelManager isLocked value is " + isLocked);
+    const isLocked = this.props.isLocked;
     if (error) {
       return (
         <div id="error happens">
