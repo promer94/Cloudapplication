@@ -1,32 +1,41 @@
-## Basic structure of project
-This guide uses the following structure for the flask-app project:
+# Development guide
+---
+## Basic test  
+if you want to have quick look about this project. You need go to production directory and using  
+```bash 
+pip install -r requirements.txt
+```
+It will install all the dependencies for our python(backend code).
+Then
+```bash
+python app.py
+```
+It will set up a local server to host the **static** file.
 
-flask-app project structure
-* app.yaml: Configure the settings of your App Engine application
-* main.py: Write the content of your application
-* static: Directory to store your static files
-* templates: Directory for all of your HTML templates
+Then you would ba able to using the app locally.
 
-## Set up
-* 1. Create and enter an isolated Python environment using virtualenv:
-   
-   virtualenv env 
-   source env/bin/activate
+---
+## Development
+* if you want to make some changes about backend. You should modify **app.py**.  
 
-At the end of the tutorial, you can exit your virtualenv by typing deactivate.
+* if you want to make changes about frontend. You first need enter into **chat** , it has a **package.json**.  
+You need install all the frontend dependencies for React and Material UI.  
+```bash
+npm installl
+```
+after that you can start development by edit the files in the */src*  
+When you finish you changes. you should build a new static file.
+```bash
+npm run build
+```
+It will give a new static file. So you need to delete the old outside the **chat** app, and move the current static file into production directory.
 
-* 2. Install dependencies using pip:
+At last, in production directory, you can run
+```bash
+python app.py
+```
+to see your new application.  
 
-      pip install -t lib -r requirements.txt
-
-The -t lib flag copies the libraries into a lib folder, which is uploaded to App Engine during deployment. See Installing a third-party library for more information about the vendoring process.The -r requirements.txt flag tells pip to install everything from a requirements.txt file.
-
-## Test the application
-Test the application using the local development server (dev_appserver.py), which is included with the SDK.
-* 1. From within the root directory where the app's app.yaml configuration file is located, start the local development server with the following command:
-
-  dev_appserver.py app.yaml
-
-The local development server is now running and listening for requests on port 8080.
-
-* 2. Visit http://localhost:8080/  in your web browser to view the app.
+---
+## Tips
+* Sometime you will find you application doesn't change after you edited your code. That is beacause the browser store your previous Javascript file. You might found in python console it doesn't have a new GET http request for new javascript file. You need to clean the history file or you may just download a new browser and change setting to make sure it will not stroe any file.

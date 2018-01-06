@@ -1,9 +1,0 @@
-FRIENDLY NAME : SocialFamily
-SID : SK4e626faa37097cbd29c2bf6c294a004a
-KEY TYPE : Master
-SECRET : UkXkyTxQhQDJuM2e9uWDNJZe2rsBaoc3
-
-FRIENDLY NAME : SocailFamily_std
-SID : SK9650c4d120e826dfd6cc2900d5b95d24
-KEY TYPE : Standard
-SECRET : 9ehpuUmpAR7dITTLnwFrShUrWsQmknyX
