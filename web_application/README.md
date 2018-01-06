@@ -81,5 +81,30 @@ python app.py
 To test your application.
 
 ---
+## Deploy
+We using google app engine flexiable enviorment to hosting our webapplication. If you want deploy it from your local machine, you need download [google cloud SDK](https://cloud.google.com/sdk/) first. 
+1. Clone the repository
+```bash
+git clone https://github.com/promer94/SocialFamily.git
+cd SocialFamily
+cd web_application
+```
+2. Set up virtual enviorment for python and install the denpencies
+```bash
+pip install virtualenv env
+virtualenv env
+source env/bin/activate
+pip install -r -requirements.txt
+```
+3. Produce the static folder
+```bash
+npm install
+npm run build
+```
+4. Initialize the google cloud sdk and deploy
+```bash
+gcloud init
+gcloud app deploy
+```
 
 
