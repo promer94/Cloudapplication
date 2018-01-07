@@ -46,7 +46,7 @@ class PinWindow extends React.Component {
       // get the maxLength from component's props
       if (value.toString().trim().length > 4) {
         // Return jsx
-        return <span className="error">The PIN exceeded 4 digits!</span>;
+        return <div className="error">The PIN exceeded 4 digits!</div>;
       }
     };
 
@@ -59,11 +59,11 @@ class PinWindow extends React.Component {
       let pin2 = components["repeatPassword"][0].value;
 
       if (isNaN(pin1) || isNaN(pin2)) {
-        return <span className="error">Only digits allowed!</span>;
+        return <div className="error">Only digits allowed!</div>;
       }
 
       if (pin1 !== pin2) {
-        return <span className="error">PINs are not equal!</span>;
+        return <div className="error">PINs are not equal!</div>;
       }
     };
 

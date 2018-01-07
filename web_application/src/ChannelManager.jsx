@@ -62,10 +62,10 @@ class ChannelManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      contectList: [],
+      contactList: [],
       invitationList: [],
       currentChannel: "",
-      isContectListReady: false,
+      isContactListReady: false,
       isInvitationListReady: false,
       isChannelReady: false,
       invitationSnackBarOpen: false,
@@ -77,7 +77,7 @@ class ChannelManager extends React.Component {
       newChannlename: "",
       emailAdress: ""
     };
-    this.loadContectList = this.loadContectList.bind(this);
+    this.loadContactList = this.loadContactList.bind(this);
     this.hadnleNewChannleChange = this.hadnleNewChannleChange.bind(this);
     this.handleNewChannleSubmit = this.handleNewChannleSubmit.bind(this);
     this.handleInvitaionChange = this.handleInvitaionChange.bind(this);
@@ -86,25 +86,23 @@ class ChannelManager extends React.Component {
 
   //TODO:Add listener for update channel list
   componentDidMount() {
-    this.loadContectList();
-    const updateContectList = this.loadContectList.bind(this);
+    this.loadContactList();
+    const updateContactList = this.loadContactList.bind(this);
     const setState = this.setState.bind(this);
     axios
       .get("/token")
       .then(response => {
         if (!response.data.token) {
-          console.log(response);
         } else {
-          console.log(response.data.token);
           let twilioToken = response.data.token;
           let chatClient = new Chat(twilioToken);
           chatClient.on("channelAdded", function(channel) {
-            setState({ isContectListReady: false });
-            updateContectList();
+            setState({ isContactListReady: false });
+            updateContactList();
           });
           chatClient.on("channelRemoved", function(channel) {
-            setState({ isContectListReady: false });
-            updateContectList();
+            setState({ isContactListReady: false });
+            updateContactList();
           });
           chatClient.on("channelInvited", function(channel) {
             let message = "Invited to channel " + channel.friendlyName;
@@ -121,12 +119,11 @@ class ChannelManager extends React.Component {
   //TODO: Remove listener
   componentWillUnmount() {
     let chatClient = this.state.chatClient;
-    console.log(chatClient);
     chatClient.removeAllListeners();
   }
 
-  //TODO: Load contect list from twilio list
-  loadContectList() {
+  //TODO: Load contact list from twilio list
+  loadContactList() {
     const setState = this.setState.bind(this);
     axios
       .get("/token")
@@ -137,12 +134,12 @@ class ChannelManager extends React.Component {
           let twilioToken = response.data.token;
           let chatClient = new Chat(twilioToken);
           chatClient.getSubscribedChannels().then(function(paginator) {
-            let contectList = paginator.items.map(data => {
+            let contactList = paginator.items.map(data => {
               return data;
             });
-            setState({ contectList: contectList });
+            setState({ contactList: contactList });
             setState({ chatClient: chatClient });
-            setState({ isContectListReady: true });
+            setState({ isContactListReady: true });
           });
         }
       })
@@ -150,56 +147,29 @@ class ChannelManager extends React.Component {
         setState({ error: error });
       });
   }
-  //TODO:
+
   //Delete channels
   handleChannelDelete = data => () => {
-    const contectList = [...this.state.contectList];
-    const contectToDelete = contectList.indexOf(data);
-    contectList[contectToDelete].delete().then(function(channel) {});
-    //contectList.splice(contectToDelete, 1);
-    //this.setState({ contectList });
+    const contactList = [...this.state.contactList];
+    const contactToDelete = contactList.indexOf(data);
+    contactList[contactToDelete].delete().then(function(channel) {});
   };
 
-  //TODO:Swich between channels
+  //Swich between channels
   handleChannelSwitch = data => () => {
     const changeChannel = this.props.changeChannel;
-    const contectList = [...this.state.contectList];
-    const channelToJoin = contectList.indexOf(data);
-    changeChannel(contectList[channelToJoin]);
-    contectList[channelToJoin].join().catch(function(err) {
-      console.log("switch channel error catched");
+    const contactList = [...this.state.contactList];
+    const channelToJoin = contactList.indexOf(data);
+    changeChannel(contactList[channelToJoin]);
+    contactList[channelToJoin].join().catch(function(err) {
       console.log(err);
     });
 
-    this.setState({ currentChannel: contectList[channelToJoin] });
+    this.setState({ currentChannel: contactList[channelToJoin] });
     this.setState({ isChannelReady: true });
   };
 
-  //TODO:
-  //Delete channels
-
-  /*  acceptInvitation = data => () => {
-    const changeChannel = this.props.changeChannel;
-    const invitationList = [...this.state.invitationList];
-    const invitationToAccept = invitationList.indexOf(data);
-    changeChannel(invitationList[invitationToAccept]);
-    invitationList[invitationToAccept].join();
-    this.setState({ currentChannel: invitationList[invitationToAccept] });
-    console.log(
-      "joined channel: " + invitationList[invitationToAccept].uniqueName
-    );
-    invitationList.splice(invitationToAccept,1);
-  };
-*/
-
-  /*  deleteInvitaion = data => () => {
-    const invitationList = [...this.state.invitationList];
-    const invitationToDelete = invitationList.indexOf(data);
-    invitationList.splice(invitationToDelete, 1);
-    this.setState({ invitationList:invitationList});
-  };
-*/
-  //TODO:Form action for creating a new Channel
+  //Form action for creating a new Channel
   hadnleNewChannleChange(e) {
     this.setState({ newChannlename: e.target.value });
   }
@@ -234,7 +204,7 @@ class ChannelManager extends React.Component {
     this.setState({ newChannlename: "" });
     e.preventDefault();
   }
-  //TODO: Create invitaions
+  //Create invitaions
   handleInvitaionChange(e) {
     this.setState({ emailAdress: e.target.value });
   }
@@ -272,12 +242,10 @@ class ChannelManager extends React.Component {
     const classes = this.props;
     const {
       error,
-      isContectListReady,
-      //   isLocked,
-      contectList,
+      isContactListReady,
+      contactList,
       isChannelReady
     } = this.state;
-    // console.log("ChannelManager isLocked value is " + isLocked);
     const isLocked = this.props.isLocked;
     if (error) {
       return (
@@ -285,7 +253,7 @@ class ChannelManager extends React.Component {
           <Typography>Error: {error.message}</Typography>
         </div>
       );
-    } else if (!isContectListReady) {
+    } else if (!isContactListReady) {
       return (
         <div id="loding">
           <CircularProgress
@@ -299,10 +267,10 @@ class ChannelManager extends React.Component {
       return (
         <div>
           {isLocked ? (
-            <div id="contect list">
+            <div id="contact list">
               <List>
-                <div id="contects" className={classes.row}>
-                  {contectList.map(data => {
+                <div id="contacts" className={classes.row}>
+                  {contactList.map(data => {
                     return (
                       <Chip
                         avatar={
@@ -312,7 +280,6 @@ class ChannelManager extends React.Component {
                         }
                         label={data.friendlyName}
                         key={data.sid}
-                        onDelete={this.handleChannelDelete(data)}
                         onClick={this.handleChannelSwitch(data)}
                         className={classes.chip}
                       />
@@ -345,11 +312,11 @@ class ChannelManager extends React.Component {
                 </form>
                 <Divider />
               </div>
-              <div id="contect list">
+              <div id="contact list">
                 <Typography
                   type="body1"
                   color="default"
-                  children="Contects"
+                  children="Contacts"
                   noWrap
                 />
                 <Snackbar
@@ -374,8 +341,8 @@ class ChannelManager extends React.Component {
                   ]}
                 />
                 <List>
-                  <div id="contects" className={classes.row}>
-                    {contectList.map(data => {
+                  <div id="contacts" className={classes.row}>
+                    {contactList.map(data => {
                       return (
                         <Chip
                           avatar={

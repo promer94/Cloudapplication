@@ -18,12 +18,13 @@ const styles = theme => ({
   container: {
     display: "flex",
     flexWrap: "wrap",
-    width: "100%"
+    width: "100%",
+    height: "500px"
   },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: "350px",
+    width: "400px",
     align: "center"
   },
   root: theme.mixins.gutters({
@@ -40,12 +41,11 @@ class ChatWindow extends React.Component {
     this.state = {
       historyMessages: [],
       newMessages: [],
-      inputmassage: ""
+      inputmessage: ""
     };
     this.submitHandler = this.submitHandler.bind(this);
     this.textChangeHandler = this.textChangeHandler.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
-    //TODO:
     this.handleEnterInput = this.handleEnterInput.bind(this);
     this.deliverMessage = this.deliverMessage.bind(this);
   }
@@ -61,9 +61,9 @@ class ChatWindow extends React.Component {
       const newChannel = nextProps.currentChannel;
       const setState = this.setState.bind(this);
 
-      let scrollToBottom = this.scrollToBottom.bind(this); //Auto scrollToBottom *******
+      let scrollToBottom = this.scrollToBottom.bind(this); //Auto scrollToBottom
       newChannel.getMessages().then(function(messages) {
-        setState({ newMessages: [] }); //Clear History input *******
+        setState({ newMessages: [] }); //Clear History input
         setState({ historyMessages: messages.items });
         scrollToBottom();
       });
@@ -81,14 +81,10 @@ class ChatWindow extends React.Component {
     const setState = this.setState.bind(this);
     let scrollToBottom = this.scrollToBottom.bind(this);
     currentChannel.getMessages().then(function(messages) {
-      console.log("didMount");
-      console.log(messages.items);
       setState({ historyMessages: messages.items });
       scrollToBottom();
     });
     currentChannel.on("messageAdded", function(message) {
-      console.log("didMount");
-      console.log(message);
       newMessages = newMessages.concat(message);
       setState({ newMessages: newMessages });
       scrollToBottom();
@@ -112,7 +108,7 @@ class ChatWindow extends React.Component {
     // make a request
     axios
       .post("/sentiment", {
-        message: this.state.inputmassage
+        message: this.state.inputmessage
       })
       .then(response => {
         if (response.data.status) {
@@ -127,7 +123,7 @@ class ChatWindow extends React.Component {
       });
     event.preventDefault();
   }
-  //TODO:
+
   handleEnterInput(e) {
     const channel = this.props.currentChannel;
     var risk = "";
@@ -135,7 +131,7 @@ class ChatWindow extends React.Component {
       // make a request
       axios
         .post("/sentiment", {
-          message: this.state.inputmassage
+          message: this.state.inputmessage
         })
         .then(response => {
           if (response.data.status) {
@@ -152,18 +148,16 @@ class ChatWindow extends React.Component {
   }
 
   deliverMessage(resp, channel, e) {
-    const testVar = resp + this.state.inputmassage + resp;
-    this.setState({ inputmassage: testVar });
-    console.log("INPUT MESSAGE: " + this.state.inputmassage);
+    const testVar = resp + this.state.inputmessage + resp;
+    this.setState({ inputmessage: testVar });
     channel.sendMessage(testVar);
-    console.log("TESTVAR " + testVar);
-    this.setState({ inputmassage: "" });
+    this.setState({ inputmessage: "" });
     this.scrollToBottom();
     e.preventDefault();
   }
 
   textChangeHandler(event) {
-    this.setState({ inputmassage: event.target.value });
+    this.setState({ inputmessage: event.target.value });
   }
 
   render() {
@@ -203,12 +197,12 @@ class ChatWindow extends React.Component {
                     <div>
                       <Typography
                         align="left"
-                        color="sceondary"
+                        color="secondary"
                         type="display2"
                       >
                         {data.body}
                       </Typography>
-                      <Typography align="left" color="sceondary" type="caption">
+                      <Typography align="left" color="secondary" type="caption">
                         {data.timestamp.toLocaleString()}
                       </Typography>
                     </div>
@@ -234,12 +228,12 @@ class ChatWindow extends React.Component {
                     <div>
                       <Typography
                         align="left"
-                        color="sceondary"
+                        color="secondary"
                         type="display2"
                       >
                         {data.body}
                       </Typography>
-                      <Typography align="left" color="sceondary" type="caption">
+                      <Typography align="left" color="secondary" type="caption">
                         {data.timestamp.toLocaleString()}
                       </Typography>
                     </div>
@@ -264,7 +258,7 @@ class ChatWindow extends React.Component {
                   className={classes.textField}
                   onChange={this.textChangeHandler}
                   onKeyPress={this.handleEnterInput}
-                  value={this.state.inputmassage}
+                  value={this.state.inputmessage}
                   margin="normal"
                 />
                 <Button color="primary" type="submit">

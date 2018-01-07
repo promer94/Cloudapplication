@@ -25,7 +25,7 @@ import PersonInfoAvatars from "./PersonInfoAvatars";
 import LockButton from "./LockButton";
 import PinWindow from "./PinWindow";
 
-//Twilio IP-Massages library
+//Twilio IP-Messages library
 import Chat from "twilio-chat";
 
 //AJAX library
@@ -95,7 +95,7 @@ class HomePage extends React.Component {
       currentChannel: "",
       twilioIdentity: "",
       twilioToken: "",
-      contectList: []
+      contactList: []
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -166,7 +166,6 @@ class HomePage extends React.Component {
 
   //Show chat page after first time log in
   changeIsFirstLogin() {
-    console.log("We're inside changeIsFirstLogin");
     this.setState({ isFirstLogin: false });
   }
 
@@ -174,25 +173,12 @@ class HomePage extends React.Component {
   changeIsLocked(lockedStatus) {
     // let isLocked = lockedStatus;
     this.setState({ isLocked: lockedStatus });
-    console.log("HomePage.state.isLocked " + this.state.isLocked);
-    if (this.state.isLocked) {
-      console.log(
-        "Unlocked mode - PARENT MODE - HomePage.state.isLocked = " +
-          this.state.isLocked
-      );
-    } else {
-      console.log(
-        "Locked mode - CHILD MODE - HomePage.state.isLocked = " +
-          this.state.isLocked
-      );
-    }
   }
 
   render() {
     const { classes } = this.props;
     let isLogin = this.state.isLogin;
     let isFirstLogin = this.state.isFirstLogin;
-    console.log("isFirstLogin is " + isFirstLogin);
     let isChatSetUp = this.state.isChatSetUp;
     let isLocked = this.state.isLocked;
     let currentChannelName =
@@ -210,10 +196,10 @@ class HomePage extends React.Component {
         }}
       >
         <div
-          id="person info container"
+          id="personInfo"
           className={classes.drawerHeader}
           children={
-            <div className={classes.row} id="person info display after login">
+            <div className={classes.row} id="personInfo">
               {isLogin ? (
                 <div>
                   <PersonInfoAvatars
@@ -230,14 +216,14 @@ class HomePage extends React.Component {
           }
         />
         <Divider />
-        <div id="Contects container">
+        <div id="Contacts container">
           {isLogin ? (
-            //Contect List
-            <div id="contects list title">
+            //Contact List
+            <div id="contacts list title">
               <Typography
                 type="title"
                 color="default"
-                children="Contect List"
+                children="Contacts List"
                 noWrap
               />
               <Divider />
