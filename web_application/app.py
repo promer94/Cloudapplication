@@ -1,25 +1,27 @@
 # SourceA
 from __future__ import print_function
-import os
-from flask import Flask, jsonify, request, redirect, url_for, session
-from flask_oauth import OAuth
-from functools import wraps
-import simplejson as json
-from pymongo import MongoClient
-from twilio.rest import Client
-from twilio.jwt.access_token import AccessToken
-from twilio.jwt.access_token.grants import (
-    SyncGrant,
-    VideoGrant,
-    IpMessagingGrant
-)
-from dotenv import load_dotenv, find_dotenv
-from os.path import join, dirname
-from inflection import underscore
-from flask_cors import CORS
+
 import json
+import os
+from functools import wraps
+from os.path import dirname, join
+
+import simplejson as json
+from dotenv import find_dotenv, load_dotenv
+from flask import Flask, jsonify, redirect, request, session, url_for
+from flask_cors import CORS
+from flask_oauth import OAuth
+from inflection import underscore
+from pymongo import MongoClient
+from twilio.jwt.access_token import AccessToken
+from twilio.jwt.access_token.grants import (IpMessagingGrant, SyncGrant,
+                                            VideoGrant)
+from twilio.rest import Client
+
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
-from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions
+from watson_developer_cloud.natural_language_understanding_v1 import (EntitiesOptions,
+                                                                      Features,
+                                                                      KeywordsOptions)
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -30,49 +32,55 @@ natural_language_understanding = NaturalLanguageUnderstandingV1(
     username='02fb23e9-20d1-47da-bfa8-f380cb1a0bc9',
     password='gk3oevbKk7gD')
 
+
 def GetLineStr(output):
     alllines = output.split('\n')
-    lines=[]
+    lines = []
     for oneline in alllines:
         lines.append(oneline)
     return lines
 
+
 def sentiment_output(shuru):
-  response = natural_language_understanding.analyze(
-    text=shuru,
-      features=Features(
-    keywords=KeywordsOptions(
-      emotion=False,
-      sentiment=True,
-      limit=1)))
-  output = json.dumps(response,indent=2)
-  return output
+    response = natural_language_understanding.analyze(
+        text=shuru,
+        features=Features(
+            keywords=KeywordsOptions(
+                emotion=False,
+                sentiment=True,
+                limit=1)))
+    output = json.dumps(response, indent=2)
+    return output
+
 
 def judgement(inputstring):
-  orignalOutput = sentiment_output(inputstring)
-  processed1 = GetLineStr(orignalOutput)
-  checkmess = processed1[12]
-  print(checkmess)
-  if "negative" in checkmess:
-    return False
-  else:
-    return True
+    orignalOutput = sentiment_output(inputstring)
+    processed1 = GetLineStr(orignalOutput)
+    checkmess = processed1[12]
+    print(checkmess)
+    if "negative" in checkmess:
+        return False
+    else:
+        return True
+
 
 def word_len(s):
     return len([i for i in s.split(' ') if i])
 
+
 def inputcheck(inputstring):
-  num = word_len(inputstring)
-  print(inputstring)
-  if (num >= 3):
-    try:
-      result = judgement(inputstring)
-      return result
-    except:
-	  return True
-  if (num < 3):
-    print('Not enough words')
-    return True
+    num = word_len(inputstring)
+    print(inputstring)
+    if (num >= 3):
+        try:
+            result = judgement(inputstring)
+            return result
+        except:
+            return True
+    if (num < 3):
+        print('Not enough words')
+        return True
+
 
 # Set up Google SignIn
 GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
@@ -91,7 +99,6 @@ TWILIO_API_KEY = os.environ['TWILIO_API_KEY'],
 TWILIO_API_SECRET = (os.environ['TWILIO_API_SECRET']),
 TWILIO_CHAT_SERVICE_SID = os.environ['TWILIO_CHAT_SERVICE_SID'],
 TWILIO_SYNC_SERVICE_SID = os.environ['TWILIO_SYNC_SERVICE_SID'],
-
 
 
 app = Flask(__name__)
@@ -113,22 +120,27 @@ google = oauth.remote_app('google',
                           consumer_key=GOOGLE_CLIENT_ID,
                           consumer_secret=GOOGLE_CLIENT_SECRET)
 
+
 @app.route('/')
 def index():
     return loginWithgoogle()
 
+
 @app.route('/home')
 def home():
     return app.send_static_file('index.html')
+
 
 @app.route('/login')
 def login():
     callback = url_for('authorized', _external=True)
     return google.authorize(callback=callback)
 
+
 @app.route('/<path:path>')
 def static_file(path):
     return app.send_static_file(path)
+
 
 def is_logged_in(f):
     @wraps(f)
@@ -139,10 +151,12 @@ def is_logged_in(f):
             return redirect(url_for('home'))
     return wrap
 
+
 @app.route('/chat')
 @is_logged_in
 def chat():
     return app.send_static_file('index.html')
+
 
 @app.route('/logout')
 @is_logged_in
@@ -151,70 +165,77 @@ def logout():
     return redirect(url_for('home'))
 
 # route to store the pin
+
+
 @app.route('/pin', methods=['POST'])
 @is_logged_in
 def createPin():
-	print('CALLED route /pin')
-	content = request.get_json() or request.form
-	session['isFirstLogin'] = False
-	print(content['pin'])
-	# save content['pin'] to the DB
-	# the record is already in the DB
-	# I don't check is this first login or not
-	# add PIN field name
-	filter = {'email': session['user_email']}
-	record = {
-		'pin': content['pin']
-	}
-	collection.update(filter, {'$set' : record})
-	print('Recorded data is: ')
-	print(record)
-	return redirect(url_for('home'))
+    print('CALLED route /pin')
+    content = request.get_json() or request.form
+    session['isFirstLogin'] = False
+    print(content['pin'])
+    # save content['pin'] to the DB
+    # the record is already in the DB
+    # I don't check is this first login or not
+    # add PIN field name
+    filter = {'email': session['user_email']}
+    record = {
+        'pin': content['pin']
+    }
+    collection.update(filter, {'$set': record})
+    print('Recorded data is: ')
+    print(record)
+    return redirect(url_for('home'))
 
 # route to check the pin
+
+
 @app.route('/checkpin', methods=['POST'])
 @is_logged_in
 def checkPin():
-	print('CALLED route /checkpin')
-	content = request.get_json() or request.form
-	print(content['pin'])
-	# validate input pin by comparing it to the DB record
-	filter = {'email': session['user_email']}
-	cursor = collection.find(filter)
-	for c in cursor:
-		if c['pin'] == content['pin']:
-			print('PINS ARE EQUAL')
-			return jsonify(valid=True)
-		else:
-			print('PINS ARE NOT EQUAL')
-			return jsonify(valid=False)
+    print('CALLED route /checkpin')
+    content = request.get_json() or request.form
+    print(content['pin'])
+    # validate input pin by comparing it to the DB record
+    filter = {'email': session['user_email']}
+    cursor = collection.find(filter)
+    for c in cursor:
+        if c['pin'] == content['pin']:
+            print('PINS ARE EQUAL')
+            return jsonify(valid=True)
+        else:
+            print('PINS ARE NOT EQUAL')
+            return jsonify(valid=False)
 
 # route to process messages
+
+
 @app.route('/sentiment', methods=['POST'])
 @is_logged_in
 def checkMessage():
-	print('CALLED route /sentiment')
-	content = request.get_json() or request.form
-	print(content['message'])
-	message = content['message']
-	# send message to IBM Watson
-	status = inputcheck(message)
-	print('STATUS IS ')
-	print(status)
-	if status == True:
-		return jsonify(status = True)
-	else:	
-		return jsonify(status = False)
+    print('CALLED route /sentiment')
+    content = request.get_json() or request.form
+    print(content['message'])
+    message = content['message']
+    # send message to IBM Watson
+    status = inputcheck(message)
+    print('STATUS IS ')
+    print(status)
+    if status == True:
+        return jsonify(status=True)
+    else:
+        return jsonify(status=False)
 
-@app.route('/userinfo' , methods=['GET'])
+
+@app.route('/userinfo', methods=['GET'])
 @is_logged_in
 def userInfo():
     return jsonify(
-        user_email = session['user_email'],
-        user_name = session['user_name'],
-        user_picture = session['user_picture'],
-        user_status = session['logged_in'],
-        user_isFirsttime = session['isFirstLogin'] 
+        user_email=session['user_email'],
+        user_name=session['user_name'],
+        user_picture=session['user_picture'],
+        user_status=session['logged_in'],
+        user_isFirsttime=session['isFirstLogin']
     )
 
 
@@ -223,20 +244,6 @@ def userInfo():
 def userToken():
     user_name = session['user_email']
     return generateToken(user_name)
-
-
-@app.route('/token', methods=['POST'])
-@is_logged_in
-def createToken():
-    user_name = session['user_email']
-    content = request.get_json() or request.form
-    identity = content.get('identity',  user_name)
-    return generateToken(identity)
-
-@app.route('/token/<identity>', methods=['POST', 'GET'])
-@is_logged_in
-def token(identity):
-    return generateToken(identity)
 
 
 @app.route(REDIRECT_URI)
@@ -291,6 +298,7 @@ def loginWithgoogle():
     else:
         session['isFirstLogin'] = False
         return redirect(url_for('chat'))
+
 
 def generateToken(identity):
     # get credentials for environment variables
