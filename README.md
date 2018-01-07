@@ -19,7 +19,7 @@ In this project, there were four cloud services involved:
 ## Preparation
 
 ### 1 Setting up cloud services
-To run the application you'll need to gather all cloud services credentials and congigure them in **example.env** and **app.yaml**.
+To run the application you'll need to gather all cloud services credentials and configure them in **example.env** and **app.yaml**.
 
 
 [The Google Identity Platform](https://developers.google.com/identity/)
@@ -72,15 +72,25 @@ It will start a dev-server for frontend. Then you should be able to have a quick
 
 ---
 ## Development
-Thanks to [Create React App](https://github.com/facebookincubator/create-react-app), it provides us with a dev-server that could help us to development. You should start development by editing the **src** folder, **app.py** and **app.yaml**. Once you are satisfied with you frontend, run
+Thanks to [Create React App](https://github.com/facebookincubator/create-react-app), it provides us with a dev-server that could help us to develop. You should start the development by editing the **src** folder, **app.py** and **app.yaml**. Once you are satisfied with you frontend, run
 ```bash
 npm run build
 ```
-It will produce a folder called **staic**. Then you can start the python http server by
+It will produce a folder called **static**. After that you can start the python http server by
 ```
 python app.py
 ```
 To test your application.
+
+We recommend you to use [Visual Studio Code](https://code.visualstudio.com/). There is a list of vscode extensions that might impove your productivity:
+* [ESLint for JavaScript lint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) The configuration file is included in this project.
+* [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) It can automatically format your code.
+* [Sublime Babel](https://marketplace.visualstudio.com/items?itemName=joshpeng.sublime-babel-vscode) Display syntax highlight.
+* [Path Intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense) Autocomplete filenames
+* [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) Python support in vscode.
+* [Git Extension Pack](https://marketplace.visualstudio.com/items?itemName=donjayamanne.git-extension-pack) Git support in vscode
+
+For chrome and firefox, we can use [react developer tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) to debug the application.
 
 ---
 ## Deploy
