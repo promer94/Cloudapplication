@@ -165,15 +165,11 @@ def logout():
     return redirect(url_for('home'))
 
 # route to store the pin
-
-
 @app.route('/pin', methods=['POST'])
 @is_logged_in
 def createPin():
-    print('CALLED route /pin')
     content = request.get_json() or request.form
     session['isFirstLogin'] = False
-    print(content['pin'])
     # save content['pin'] to the DB
     # the record is already in the DB
     # I don't check is this first login or not
@@ -183,44 +179,31 @@ def createPin():
         'pin': content['pin']
     }
     collection.update(filter, {'$set': record})
-    print('Recorded data is: ')
-    print(record)
     return redirect(url_for('home'))
 
+
 # route to check the pin
-
-
 @app.route('/checkpin', methods=['POST'])
 @is_logged_in
 def checkPin():
-    print('CALLED route /checkpin')
     content = request.get_json() or request.form
-    print(content['pin'])
     # validate input pin by comparing it to the DB record
     filter = {'email': session['user_email']}
     cursor = collection.find(filter)
     for c in cursor:
         if c['pin'] == content['pin']:
-            print('PINS ARE EQUAL')
             return jsonify(valid=True)
         else:
-            print('PINS ARE NOT EQUAL')
             return jsonify(valid=False)
 
 # route to process messages
-
-
 @app.route('/sentiment', methods=['POST'])
 @is_logged_in
 def checkMessage():
-    print('CALLED route /sentiment')
     content = request.get_json() or request.form
-    print(content['message'])
     message = content['message']
     # send message to IBM Watson
     status = inputcheck(message)
-    print('STATUS IS ')
-    print(status)
     if status == True:
         return jsonify(status=True)
     else:
