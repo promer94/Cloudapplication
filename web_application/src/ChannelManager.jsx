@@ -316,7 +316,7 @@ class ChannelManager extends React.Component {
                 <Typography
                   type="body1"
                   color="default"
-                  children="Contacts"
+                  children="Channels"
                   noWrap
                 />
                 <Snackbar

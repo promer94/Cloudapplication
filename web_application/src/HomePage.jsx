@@ -223,7 +223,7 @@ class HomePage extends React.Component {
               <Typography
                 type="title"
                 color="default"
-                children="Contacts List"
+                children="Channels List"
                 noWrap
               />
               <Divider />
