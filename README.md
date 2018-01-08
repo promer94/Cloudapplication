@@ -60,7 +60,7 @@ After all the python dependencies installed, you should be able to run the **app
 ```bash
 python app.py
 ```
-Next stpe is to install the JavaScript denpendencies.
+Next step is to install the JavaScript denpendencies.
 ```bash
 npm install
 ```
