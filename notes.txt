@@ -1,4 +1,4 @@
-Please be aware that our team lead John Philip Wilson (jpw1n17) has been ill for the last 3 weeks which has impacted of the teams finilising the project submission.
+Please be aware that our team lead John Philip Wilson (jpw1n17) has been ill for the last 3 weeks which has impacted the teams finilising the project submission.
 
 a working version of the application can be found in the "web_application" founder.  This is not in the require layout for the submission.
 
